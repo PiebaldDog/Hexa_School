@@ -1,0 +1,2540 @@
+<!DOCTYPE html>
+<html lang="ru" class="no-js">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Гекса — онлайн-школа в мини-группах до 6 человек для учеников 1–11 классов</title>
+  <meta name="description" content="Подтянем оценки за 2 месяца занятий по 30 минут в день. Обучение в мини-группах до 6 человек с преподавателями из топ-20 вузов России. Гарантия результата за 8 занятий или возврат денег.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2300b4d8'/%3E%3Cstop offset='1' stop-color='%2300769c'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M32 2 58 17v30L32 62 6 47V17z' fill='url(%23g)'/%3E%3Ctext x='32' y='43' font-family='Arial,sans-serif' font-size='30' font-weight='700' fill='white' text-anchor='middle'%3EГ%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="fonts.css">
+  <style>
+    /* ============ БАЗА И ПЕРЕМЕННЫЕ ============ */
+    :root {
+      --accent:        #00b4d8;
+      --accent-dark:   #0096b8;
+      --accent-soft:   #e6f9fd;
+      --success:       #12b886;
+      --success-soft:  #e7f9f3;
+      --alert:         #ff7a00;
+      --alert-soft:    #fff3e8;
+      --ink:           #212529;
+      --ink-soft:      #495057;
+      --ink-mute:      #868e96;
+      --bg:            #f8f9fa;
+      --white:         #ffffff;
+      --border:        #e7eaee;
+      --radius:        18px;
+      --radius-sm:     12px;
+      --shadow:        0 10px 30px rgba(33, 37, 41, .08);
+      --shadow-accent: 0 12px 28px rgba(0, 180, 216, .35);
+      --container:     1160px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--ink);
+      background: var(--white);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    img, svg { max-width: 100%; display: block; }
+    h1, h2, h3, p { margin: 0; }
+    ul { margin: 0; padding: 0; list-style: none; }
+    a { color: inherit; }
+
+    .container {
+      width: 100%;
+      max-width: var(--container);
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .section {
+      padding: 56px 0;
+      background: var(--bg);
+    }
+    .section--white { background: var(--white); }
+
+    /* Тёмная секция — в стиле финального оффера (переиспользуется для ритма страницы) */
+    .section--dark {
+      background:
+        radial-gradient(700px 320px at 15% 0%, rgba(0, 180, 216, .14), transparent 60%),
+        radial-gradient(600px 300px at 90% 100%, rgba(255, 122, 0, .12), transparent 60%),
+        var(--ink);
+      color: var(--white);
+    }
+    .section--dark .section-title { color: var(--white); }
+    .section--dark .section-subtitle { color: rgba(255, 255, 255, .72); }
+    /* Акцентный текст в заголовках на тёмном — светлее, чтобы не потеряться */
+    .section--dark .accent-strong { color: #66e0ff; }
+
+    .section-title {
+      font-size: clamp(26px, 5vw, 38px);
+      font-weight: 800;
+      line-height: 1.2;
+      letter-spacing: -.02em;
+      text-align: center;
+      max-width: 820px;
+      margin: 0 auto 12px;
+    }
+
+    .section-subtitle {
+      text-align: center;
+      color: var(--ink-soft);
+      max-width: 680px;
+      margin: 0 auto 36px;
+      font-size: clamp(15px, 2.5vw, 17px);
+    }
+
+    .accent { color: var(--accent); }
+    .accent-strong { color: var(--accent); font-weight: 800; }
+
+    /* ============ КНОПКИ ============ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      min-height: 58px;
+      padding: 16px 28px;
+      font-family: inherit;
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1.3;
+      text-align: center;
+      text-decoration: none;
+      color: var(--white);
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+      border: none;
+      border-radius: 14px;
+      cursor: pointer;
+      box-shadow: var(--shadow-accent);
+      transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;
+    }
+    .btn:hover, .btn:focus-visible {
+      transform: translateY(-3px);
+      box-shadow: 0 16px 34px rgba(0, 180, 216, .42);
+      filter: brightness(1.05);
+    }
+    .btn:active { transform: translateY(-1px); }
+    .btn--ghost {
+      background: var(--white);
+      color: var(--accent-dark);
+      border: 2px solid var(--accent);
+      box-shadow: none;
+    }
+    .btn--ghost:hover { background: var(--accent-soft); box-shadow: none; }
+
+    /* ============ ШАПКА / HERO ============ */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(255, 255, 255, .92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .site-header__inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      min-height: 64px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+    .logo__mark {
+      flex: 0 0 auto;
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      color: var(--white);
+      font-weight: 800;
+      font-size: 18px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+      border-radius: 12px;
+      box-shadow: 0 6px 14px rgba(0, 180, 216, .35);
+    }
+    .logo__text { display: flex; flex-direction: column; line-height: 1.15; }
+    .logo__name { font-weight: 800; font-size: 18px; letter-spacing: -.01em; }
+    .logo__tagline {
+      font-size: 11px;
+      color: var(--ink-soft);
+      max-width: 230px;
+      line-height: 1.3;
+    }
+
+    .nav__list {
+      display: none;
+      gap: 26px;
+    }
+    .nav__link {
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+      color: var(--ink-soft);
+      transition: color .2s ease;
+    }
+    .nav__link:hover { color: var(--accent-dark); }
+
+    .header-cta {
+      display: none;
+      min-height: 42px;
+      padding: 10px 18px;
+      font-size: 14px;
+      border-radius: 10px;
+      width: auto;
+    }
+
+    .hero {
+      padding: 40px 0 56px;
+      background:
+        radial-gradient(900px 380px at 85% -10%, var(--accent-soft) 0%, transparent 60%),
+        radial-gradient(700px 320px at 0% 110%, #fff8ef 0%, transparent 55%),
+        var(--white);
+      overflow: hidden;
+    }
+
+    .hero__grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .hero__badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 14px;
+      margin-bottom: 18px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--accent-dark);
+      background: var(--accent-soft);
+      border: 1px solid rgba(0, 180, 216, .35);
+      border-radius: 999px;
+    }
+    .hero__badge-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--success);
+      box-shadow: 0 0 0 4px rgba(18, 184, 134, .18);
+    }
+
+    .hero__title {
+      font-size: clamp(30px, 7vw, 52px);
+      font-weight: 800;
+      line-height: 1.12;
+      letter-spacing: -.025em;
+      margin-bottom: 18px;
+    }
+
+    .hero__subtitle {
+      font-size: clamp(16px, 3vw, 19px);
+      color: var(--ink-soft);
+      margin-bottom: 28px;
+      max-width: 560px;
+    }
+    .hero__subtitle strong { color: var(--ink); font-weight: 700; }
+
+    .hero__cta { margin-bottom: 14px; }
+
+    .hero__microtext {
+      font-size: 13px;
+      line-height: 1.55;
+      color: var(--ink-soft);
+      max-width: 520px;
+      padding-left: 14px;
+      border-left: 3px solid var(--accent);
+    }
+
+    .hero__stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 28px;
+    }
+    .hero__stat {
+      flex: 1 1 130px;
+      padding: 14px 16px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      box-shadow: 0 4px 14px rgba(33, 37, 41, .05);
+    }
+    .hero__stat-value { font-size: 22px; font-weight: 800; color: var(--accent); line-height: 1.2; }
+    .hero__stat-label { font-size: 12.5px; color: var(--ink-soft); }
+
+    /* --- Визуальная карточка платформы --- */
+    .platform-card {
+      position: relative;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      padding: 18px;
+      max-width: 440px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .platform-card::before {
+      content: "";
+      position: absolute;
+      inset: -14px -14px auto auto;
+      width: 120px; height: 120px;
+      background: radial-gradient(circle, rgba(0,180,216,.25), transparent 70%);
+      border-radius: 50%;
+      z-index: -1;
+    }
+
+    .platform-card__top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding-bottom: 14px;
+      border-bottom: 1px dashed var(--border);
+      margin-bottom: 16px;
+    }
+    .platform-card__room { font-size: 14.5px; font-weight: 700; }
+    .platform-card__live {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #e03131;
+      background: #fff0f0;
+      padding: 5px 10px;
+      border-radius: 999px;
+    }
+    .platform-card__live::before {
+      content: "";
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: #e03131;
+      animation: pulse 1.4s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: .3; }
+    }
+
+    .group-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+    .avatar {
+      width: 44px; height: 44px;
+      display: grid;
+      place-items: center;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--white);
+      background: var(--bg);
+      border: 2px solid var(--border);
+      border-radius: 50%;
+      letter-spacing: .02em;
+    }
+    .avatar--t { background: linear-gradient(135deg, var(--accent), var(--accent-dark)); border-color: var(--accent); }
+    .avatar--k { background: linear-gradient(135deg, #74c0fc, #339af0); border-color: #74c0fc; }
+    .avatar--d { background: linear-gradient(135deg, #ffd43b, #f59f00); border-color: #ffd43b; }
+    .avatar--a { background: linear-gradient(135deg, #faa2c1, #e64980); border-color: #faa2c1; }
+    .avatar--e { background: linear-gradient(135deg, #69db7c, #2f9e44); border-color: #69db7c; }
+    .avatar--p { background: linear-gradient(135deg, #9775fa, #7048e8); border-color: #9775fa; }
+    .group-row__count {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--ink-soft);
+      margin-left: auto;
+      background: var(--accent-soft);
+      color: var(--accent-dark);
+      padding: 5px 10px;
+      border-radius: 999px;
+    }
+
+    /* Превью преподавателя в видеосвязи */
+    .video-teacher {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      margin-bottom: 16px;
+      background: linear-gradient(120deg, var(--accent-soft), #fff 70%);
+      border: 1px solid rgba(0, 180, 216, .35);
+      border-radius: 14px;
+    }
+    .video-teacher__frame {
+      position: relative;
+      flex: 0 0 auto;
+      line-height: 0;
+    }
+    .video-teacher__img {
+      width: 56px; height: 56px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--accent);
+    }
+    .video-teacher__live-dot {
+      position: absolute;
+      right: -2px; bottom: -2px;
+      width: 14px; height: 14px;
+      background: var(--success);
+      border: 2px solid var(--white);
+      border-radius: 50%;
+      box-shadow: 0 0 0 3px rgba(18, 184, 134, .25);
+      animation: pulse 1.6s infinite;
+    }
+    .video-teacher__info { display: grid; gap: 2px; min-width: 0; }
+    .video-teacher__name {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--ink);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .video-teacher__role {
+      font-size: 12.5px;
+      color: var(--ink-soft);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .video-teacher__mic {
+      margin-left: auto;
+      flex: 0 0 auto;
+      width: 34px; height: 34px;
+      display: grid;
+      place-items: center;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+    }
+
+    /* Бейджи доверия */
+    .trust-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+    .trust-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink-soft);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 7px 13px;
+    }
+
+    .chart {
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+      height: 110px;
+      padding: 12px 12px 0;
+      background: var(--bg);
+      border-radius: var(--radius-sm);
+      margin-bottom: 14px;
+    }
+    .chart__bar {
+      flex: 1;
+      border-radius: 6px 6px 0 0;
+      background: linear-gradient(180deg, var(--accent), rgba(0,180,216,.35));
+      min-width: 12px;
+      animation: grow 1s ease both;
+    }
+    .chart__bar--last { background: linear-gradient(180deg, var(--success), rgba(18,184,134,.35)); }
+    @keyframes grow {
+      from { transform: scaleY(.2); transform-origin: bottom; opacity: .4; }
+      to   { transform: scaleY(1);  transform-origin: bottom; opacity: 1; }
+    }
+    .chart__caption {
+      font-size: 12px;
+      color: var(--ink-soft);
+      text-align: center;
+      margin-top: -6px;
+      margin-bottom: 14px;
+    }
+
+    .platform-card__footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .platform-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12.5px;
+      font-weight: 600;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: var(--success-soft);
+      color: #0b7a5b;
+    }
+    .platform-pill--coins { background: var(--alert-soft); color: #b45f00; }
+
+    .float-note {
+      position: absolute;
+      right: -6px;
+      top: -34px;
+      display: none;
+      align-items: center;
+      gap: 8px;
+      font-size: 12.5px;
+      font-weight: 700;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 6px 10px;
+      box-shadow: var(--shadow);
+      white-space: nowrap;
+    }
+    .float-note__cap {
+      width: 30px; height: 30px;
+      display: grid;
+      place-items: center;
+      font-size: 15px;
+      background: var(--accent-soft);
+      border-radius: 9px;
+    }
+
+    /* ============ БЛОК 2: ПРОБЛЕМЫ И РЕШЕНИЯ ============ */
+    .split {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    .panel {
+      position: relative;
+      overflow: hidden;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 26px 20px 24px;
+      box-shadow: 0 10px 26px rgba(33, 37, 41, .07);
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+    .panel:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 34px rgba(33, 37, 41, .11);
+    }
+    .panel::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+    }
+    .panel--pain { background: linear-gradient(180deg, #fff6f6, var(--white) 46%); }
+    .panel--pain::before { background: linear-gradient(90deg, #ff8787, #ffa94d); }
+    .panel--pain::after {
+      content: "⚠️";
+      position: absolute;
+      right: -8px; bottom: -16px;
+      font-size: 96px;
+      line-height: 1;
+      opacity: .05;
+      pointer-events: none;
+    }
+    .panel--fix { background: linear-gradient(180deg, #f0fdf8, var(--white) 46%); }
+    .panel--fix::before { background: linear-gradient(90deg, #12b886, #38d9a9); }
+    .panel--fix::after {
+      content: "✅";
+      position: absolute;
+      right: -8px; bottom: -16px;
+      font-size: 96px;
+      line-height: 1;
+      opacity: .05;
+      pointer-events: none;
+    }
+    .panel__head {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .panel__icon {
+      flex: 0 0 auto;
+      width: 46px; height: 46px;
+      display: grid;
+      place-items: center;
+      font-size: 22px;
+      border-radius: 13px;
+      box-shadow: 0 6px 14px rgba(33, 37, 41, .1);
+    }
+    .panel--pain .panel__icon { background: linear-gradient(135deg, #ff8787, #e03131); }
+    .panel--fix .panel__icon  { background: linear-gradient(135deg, #38d9a9, #0ca678); }
+    .panel__title {
+      font-size: clamp(18px, 3.5vw, 21px);
+      font-weight: 800;
+      line-height: 1.3;
+      letter-spacing: -.01em;
+      text-wrap: balance;
+    }
+
+    .item-list { display: grid; gap: 16px; }
+
+    .item {
+      display: grid;
+      grid-template-columns: 36px 1fr;
+      gap: 12px;
+      align-items: start;
+      font-size: 15px;
+      line-height: 1.62;
+      color: var(--ink);
+      font-weight: 500;
+    }
+    .item__mark {
+      width: 36px; height: 36px;
+      display: grid;
+      place-items: center;
+      font-size: 17px;
+      font-weight: 800;
+      border-radius: 10px;
+      margin-top: 1px;
+    }
+    .item--pain .item__mark {
+      background: #ffd8d8;
+      color: #e03131;
+      box-shadow: inset 0 0 0 1px rgba(224, 49, 49, .28);
+    }
+    .item--fix .item__mark {
+      background: var(--accent-soft);
+      color: var(--accent-dark);
+      box-shadow: inset 0 0 0 1px rgba(0, 180, 216, .28);
+    }
+    .item strong { color: var(--ink); font-weight: 800; }
+
+    .fix-card {
+      background: linear-gradient(180deg, #e3f9f2, var(--white) 60%);
+      border: 1px solid rgba(18, 184, 134, .35);
+      border-left: 4px solid #12b886;
+      border-radius: var(--radius-sm);
+      padding: 16px 16px 16px 18px;
+      box-shadow: 0 4px 14px rgba(18, 184, 134, .08);
+    }
+    .fix-card__do {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 10px;
+    }
+    .fix-card__arrow {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--success);
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      margin-bottom: 6px;
+    }
+    .fix-card__result {
+      font-size: 15px;
+      color: var(--ink-soft);
+      line-height: 1.6;
+    }
+    .fix-card__result strong { color: var(--ink); font-weight: 700; }
+
+    /* ============ БЛОК 3: ФОРМАТ ============ */
+    .cards-3 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+    .feature-card {
+      position: relative;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 26px 22px;
+      box-shadow: 0 6px 20px rgba(33, 37, 41, .05);
+      transition: transform .25s ease, box-shadow .25s ease;
+      overflow: hidden;
+    }
+    .feature-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 18px 36px rgba(33, 37, 41, .1);
+    }
+    .feature-card::after {
+      content: "";
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 4px;
+      background: linear-gradient(90deg, var(--accent), var(--success));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .3s ease;
+    }
+    .feature-card:hover::after { transform: scaleX(1); }
+
+    .feature-card__num {
+      position: absolute;
+      top: 14px; right: 18px;
+      font-size: 44px;
+      font-weight: 800;
+      color: rgba(0, 180, 216, .12);
+      line-height: 1;
+    }
+    .feature-card__icon {
+      width: 52px; height: 52px;
+      display: grid;
+      place-items: center;
+      font-size: 26px;
+      background: var(--accent-soft);
+      border-radius: 14px;
+      margin-bottom: 16px;
+    }
+    .feature-card__label {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--accent-dark);
+      background: var(--accent-soft);
+      padding: 4px 10px;
+      border-radius: 999px;
+      margin-bottom: 10px;
+    }
+    .feature-card__title {
+      font-size: 18px;
+      font-weight: 800;
+      margin-bottom: 8px;
+      letter-spacing: -.01em;
+    }
+    .feature-card__text { font-size: 15px; color: var(--ink-soft); line-height: 1.65; }
+
+    /* ============ БЛОК FAQ ============ */
+    .faq-list {
+      max-width: 820px;
+      margin: 0 auto;
+      display: grid;
+      gap: 12px;
+    }
+    .faq-item {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      transition: border-color .2s ease, box-shadow .2s ease;
+    }
+    .faq-item[open] {
+      border-color: rgba(0, 180, 216, .5);
+      box-shadow: 0 10px 26px rgba(33, 37, 41, .07);
+    }
+    .faq-item__q {
+      list-style: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 16px 18px;
+      font-size: 15.5px;
+      font-weight: 800;
+      line-height: 1.4;
+      color: var(--ink);
+      margin: 0;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    .faq-item__q::-webkit-details-marker { display: none; }
+    .faq-item__q::after {
+      content: '+';
+      flex: 0 0 auto;
+      display: grid;
+      place-items: center;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: var(--accent-soft);
+      color: var(--accent-dark);
+      font-size: 20px;
+      font-weight: 700;
+      line-height: 1;
+      transition: transform .25s ease, background .2s ease, color .2s ease;
+    }
+    .faq-item[open] .faq-item__q::after {
+      transform: rotate(45deg);
+      background: var(--accent);
+      color: var(--white);
+    }
+    .faq-item__a {
+      padding: 0 18px 16px;
+      font-size: 15px;
+      color: var(--ink-soft);
+      line-height: 1.65;
+    }
+    .faq-item__a p { margin: 0; }
+    .faq-item__a p + p { margin-top: 10px; }
+
+    /* ============ БЛОК 4: КВИЗ ============ */
+    .quiz-wrap {
+      max-width: 680px;
+      margin: 0 auto;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      padding: 26px 20px;
+    }
+
+    .quiz__meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--ink-soft);
+      margin-bottom: 10px;
+    }
+    .quiz__meta-step { color: var(--accent-dark); }
+
+    .quiz__bar {
+      height: 8px;
+      background: var(--bg);
+      border-radius: 999px;
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+    .quiz__bar-fill {
+      height: 100%;
+      width: 20%;
+      background: linear-gradient(90deg, var(--accent), var(--success));
+      border-radius: 999px;
+      transition: width .4s ease;
+    }
+
+    .quiz-step { display: none; animation: fadeIn .35s ease; }
+    .quiz-step.is-active { display: block; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .quiz-step__title {
+      font-size: clamp(18px, 4vw, 22px);
+      font-weight: 800;
+      line-height: 1.35;
+      margin-bottom: 18px;
+      letter-spacing: -.01em;
+    }
+
+    .quiz-options { display: grid; gap: 12px; }
+
+    .quiz-option {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      min-height: 56px;
+      padding: 14px 16px;
+      font-family: inherit;
+      font-size: 15.5px;
+      font-weight: 600;
+      line-height: 1.4;
+      text-align: left;
+      color: var(--ink);
+      background: var(--bg);
+      border: 2px solid transparent;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: border-color .2s ease, background .2s ease, transform .15s ease;
+    }
+    .quiz-option::before {
+      content: "";
+      flex: 0 0 auto;
+      width: 20px; height: 20px;
+      border: 2px solid #c5cbd3;
+      border-radius: 50%;
+      transition: border-color .2s ease, box-shadow .2s ease;
+    }
+    .quiz-option:hover, .quiz-option:focus-visible {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+      transform: translateX(4px);
+    }
+    .quiz-option:hover::before { border-color: var(--accent); }
+    .quiz-option.is-selected {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+    }
+    .quiz-option.is-selected::before {
+      border-color: var(--accent);
+      box-shadow: inset 0 0 0 4px var(--white), inset 0 0 0 10px var(--accent);
+    }
+
+    .quiz__footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 22px;
+      min-height: 44px;
+    }
+    .quiz__back {
+      font-family: inherit;
+      font-size: 14.5px;
+      font-weight: 600;
+      color: var(--ink-soft);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 10px 4px;
+      transition: color .2s ease;
+    }
+    .quiz__back:hover { color: var(--ink); }
+    .quiz__back[hidden] { display: none; }
+    .quiz__hint { font-size: 13px; color: var(--ink-soft); }
+
+    /* --- Финальная форма --- */
+    .lead-form { display: grid; gap: 14px; }
+    .field { display: grid; gap: 6px; }
+    .field label {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+    .field input {
+      width: 100%;
+      min-height: 54px;
+      padding: 14px 16px;
+      font-family: inherit;
+      font-size: 16px;
+      color: var(--ink);
+      background: var(--bg);
+      border: 2px solid var(--border);
+      border-radius: var(--radius-sm);
+      transition: border-color .2s ease, background .2s ease;
+    }
+    .field input:focus {
+      outline: none;
+      border-color: var(--accent);
+      background: var(--white);
+    }
+    .field input::placeholder { color: #9aa2ad; }
+    .form-note {
+      font-size: 12.5px;
+      color: var(--ink-soft);
+      text-align: center;
+      line-height: 1.5;
+    }
+    .form-success {
+      display: none;
+      text-align: center;
+      padding: 20px 6px;
+      animation: fadeIn .4s ease;
+    }
+    .form-success.is-visible { display: block; }
+    .form-success__icon {
+      width: 64px; height: 64px;
+      display: grid;
+      place-items: center;
+      margin: 0 auto 16px;
+      font-size: 30px;
+      background: var(--success-soft);
+      border-radius: 50%;
+    }
+    .form-success__title { font-size: 20px; font-weight: 800; margin-bottom: 8px; }
+    .form-success__text { font-size: 15px; color: var(--ink-soft); }
+    .form-success__btn { margin-top: 20px; }
+
+    /* ============ БЛОК 5: ФИНАЛЬНЫЙ ОФФЕР ============ */
+    .offer {
+      background:
+        radial-gradient(700px 320px at 15% 0%, rgba(0,180,216,.14), transparent 60%),
+        radial-gradient(600px 300px at 90% 100%, rgba(255,122,0,.12), transparent 60%),
+        var(--ink);
+      color: var(--white);
+      padding: 60px 0;
+    }
+    .offer .section-title { color: var(--white); }
+    .offer .section-subtitle { color: rgba(255, 255, 255, .72); }
+
+    .offer__grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+      margin-bottom: 28px;
+    }
+
+    .offer-box {
+      border-radius: var(--radius);
+      padding: 22px 20px;
+      border: 1px solid;
+    }
+    .offer-box--urgent {
+      background: rgba(255, 122, 0, .12);
+      border-color: rgba(255, 122, 0, .55);
+      box-shadow: 0 0 0 4px rgba(255, 122, 0, .12);
+    }
+    .offer-box--safe {
+      background: rgba(0, 180, 216, .1);
+      border-color: rgba(0, 180, 216, .5);
+    }
+    .offer-box__head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 17px;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+    .offer-box__emoji {
+      width: 38px; height: 38px;
+      display: grid;
+      place-items: center;
+      font-size: 19px;
+      background: rgba(255, 255, 255, .12);
+      border-radius: 10px;
+      flex: 0 0 auto;
+    }
+    .offer-box__text {
+      font-size: 15px;
+      line-height: 1.65;
+      color: rgba(255, 255, 255, .82);
+    }
+    .offer-box__text strong { color: var(--white); font-weight: 700; }
+    .offer-box--urgent .offer-box__text strong { color: #ffb266; }
+    .offer-box--safe .offer-box__text strong { color: #7fe3ff; }
+
+    /* --- Карточка тарифа --- */
+    .price-card {
+      position: relative;
+      max-width: 440px;
+      margin: 0 auto 28px;
+      padding: 30px 24px 26px;
+      text-align: center;
+      background: linear-gradient(160deg, var(--accent) 0%, var(--accent-dark) 100%);
+      color: var(--white);
+      border: 2px solid rgba(255, 255, 255, .35);
+      border-radius: 24px;
+      box-shadow: 0 24px 50px rgba(0, 180, 216, .4);
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform .25s ease, box-shadow .25s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .price-card:hover, .price-card:focus-visible {
+      transform: translateY(-6px) scale(1.02);
+      box-shadow: 0 32px 64px rgba(0, 180, 216, .55);
+      outline: none;
+    }
+    .price-card:active { transform: translateY(-2px) scale(1); }
+    .price-card::before {
+      content: "";
+      position: absolute;
+      top: -70px; right: -70px;
+      width: 180px; height: 180px;
+      background: radial-gradient(circle, rgba(255,255,255,.28), transparent 70%);
+      border-radius: 50%;
+    }
+    .price-card__badge {
+      position: absolute;
+      top: 16px; left: -34px;
+      transform: rotate(-35deg);
+      width: 140px;
+      padding: 5px 0;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      text-align: center;
+      color: var(--ink);
+      background: #ffd43b;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, .18);
+    }
+    .price-card__plan {
+      position: relative;
+      display: inline-block;
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      background: rgba(255, 255, 255, .18);
+      padding: 6px 16px;
+      border-radius: 999px;
+      margin-bottom: 18px;
+    }
+    .price-card__old {
+      display: block;
+      font-size: 17px;
+      font-weight: 500;
+      color: rgba(255, 255, 255, .75);
+      text-decoration: line-through;
+      text-decoration-thickness: 2px;
+      margin-bottom: 4px;
+    }
+    .price-card__new {
+      display: block;
+      font-size: clamp(40px, 9vw, 54px);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -.02em;
+      color: var(--white);
+      text-shadow: 0 4px 14px rgba(0, 0, 0, .2);
+      margin-bottom: 10px;
+    }
+    .price-card__new span {
+      font-size: .38em;
+      font-weight: 600;
+      letter-spacing: 0;
+    }
+    .price-card__save {
+      display: inline-block;
+      font-size: 14.5px;
+      font-weight: 700;
+      color: var(--ink);
+      background: #d3f9ee;
+      padding: 8px 16px;
+      border-radius: 10px;
+      margin-bottom: 16px;
+    }
+    .price-card__alt {
+      display: block;
+      position: relative;
+      font-size: 13px;
+      line-height: 1.5;
+      color: rgba(255, 255, 255, .9);
+      text-decoration: none;
+      border-top: 1px dashed rgba(255, 255, 255, .4);
+      padding-top: 14px;
+      transition: color .2s ease;
+    }
+    .price-card__alt strong { color: #ffd43b; font-weight: 700; }
+    .price-card__alt:hover { color: var(--white); text-decoration: underline; }
+    .price-card .price-card__btn {
+      position: relative;
+      display: inline-flex;
+      width: 100%;
+      min-width: 0;
+      min-height: 58px;
+      margin-top: 16px;
+      font-size: 17px;
+      color: var(--accent-dark);
+      background: var(--white);
+      box-shadow: 0 10px 22px rgba(0, 0, 0, .22);
+    }
+    .price-card .price-card__btn:hover, .price-card .price-card__btn:focus-visible {
+      color: var(--accent-dark);
+      background: #f3fdff;
+      box-shadow: 0 14px 28px rgba(0, 0, 0, .28);
+    }
+    .modal-form .btn { width: 100%; min-width: 0; }
+
+    /* ============ МОДАЛЬНОЕ ОКНО ============ */
+    .modal {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .modal.is-open { display: flex; }
+
+    .modal__overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(33, 37, 41, .65);
+      backdrop-filter: blur(4px);
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      animation: fadeIn .25s ease;
+    }
+
+    .modal__dialog {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 440px;
+      max-height: calc(100vh - 32px);
+      overflow-y: auto;
+      background: var(--white);
+      border-radius: 22px;
+      padding: 30px 22px 26px;
+      box-shadow: 0 30px 70px rgba(0, 0, 0, .35);
+      animation: modalIn .3s ease;
+    }
+    @keyframes modalIn {
+      from { opacity: 0; transform: translateY(24px) scale(.97); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .modal__dialog--yform {
+      max-width: 560px;
+      padding: 18px;
+    }
+    .yform-frame {
+      position: relative;
+      background: var(--white);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    .yform-frame iframe {
+      display: block;
+      width: 100%;
+      height: 640px;
+      border: 0;
+    }
+    .yform-frame__loader {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      display: grid;
+      place-items: center;
+      background: var(--white);
+      transition: opacity .3s ease, visibility .3s ease;
+    }
+    .yform-frame.is-loaded .yform-frame__loader {
+      opacity: 0;
+      visibility: hidden;
+    }
+    .yform-frame__spinner {
+      width: 38px;
+      height: 38px;
+      border: 3px solid var(--accent-soft);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: yformSpin .8s linear infinite;
+    }
+    @keyframes yformSpin { to { transform: rotate(360deg); } }
+
+    @media (max-width: 599px) {
+      .modal__dialog--yform { padding: 14px; }
+      .yform-frame iframe { height: calc(100vh - 130px); min-height: 420px; }
+    }
+
+    .modal__close {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 40px;
+      height: 40px;
+      display: grid;
+      place-items: center;
+      font-size: 24px;
+      line-height: 1;
+      color: var(--ink-soft);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      cursor: pointer;
+      transition: color .2s ease, background .2s ease, transform .2s ease;
+    }
+    .modal__close:hover {
+      color: var(--white);
+      background: #e03131;
+      border-color: #e03131;
+      transform: rotate(90deg);
+    }
+
+    .modal__title {
+      font-size: clamp(19px, 4.5vw, 23px);
+      font-weight: 800;
+      line-height: 1.3;
+      letter-spacing: -.01em;
+      margin-bottom: 8px;
+      padding-right: 36px;
+    }
+    .modal__subtitle {
+      font-size: 14.5px;
+      color: var(--ink-soft);
+      line-height: 1.55;
+      margin-bottom: 20px;
+    }
+
+    .modal-form { display: grid; gap: 13px; }
+
+    .modal-agree {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--ink-soft);
+      cursor: pointer;
+      user-select: none;
+      padding: 4px 0;
+    }
+    .modal-agree input[type="checkbox"] {
+      flex: 0 0 auto;
+      width: 20px;
+      height: 20px;
+      margin: 1px 0 0;
+      accent-color: var(--accent);
+      cursor: pointer;
+    }
+    .modal-agree a {
+      color: var(--accent-dark);
+      text-decoration: underline;
+      text-decoration-color: rgba(0, 150, 184, .4);
+      text-underline-offset: 2px;
+    }
+    .modal-agree a:hover { color: var(--accent); text-decoration-color: rgba(0, 180, 216, .5); }
+
+    .modal-success {
+      display: none;
+      text-align: center;
+      padding: 18px 4px 6px;
+      animation: fadeIn .35s ease;
+    }
+    .modal-success.is-visible { display: block; }
+
+    .offer__cta { max-width: 560px; margin: 0 auto; }
+    .offer__cta .btn { min-height: 62px; font-size: 17px; }
+    .offer__micro {
+      text-align: center;
+      font-size: 13px;
+      color: rgba(255, 255, 255, .6);
+      margin-top: 12px;
+    }
+
+    .offer__countdown {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 26px;
+      flex-wrap: wrap;
+    }
+    .count-cell {
+      min-width: 74px;
+      padding: 10px 12px;
+      text-align: center;
+      background: rgba(255, 255, 255, .08);
+      border: 1px solid rgba(255, 255, 255, .16);
+      border-radius: 12px;
+    }
+    .count-cell__value { font-size: 26px; font-weight: 800; line-height: 1.2; }
+    .count-cell__label { font-size: 11.5px; color: rgba(255, 255, 255, .6); text-transform: uppercase; letter-spacing: .05em; }
+
+    /* ============ ФУТЕР ============ */
+    .site-footer {
+      background: var(--white);
+      border-top: 1px solid var(--border);
+      padding: 34px 0;
+    }
+    .footer__grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 22px;
+      align-items: start;
+    }
+    .footer__text {
+      font-size: 13.5px;
+      color: var(--ink-soft);
+      line-height: 1.6;
+      max-width: 420px;
+      margin-top: 10px;
+    }
+    .footer__contacts { display: grid; gap: 8px; font-size: 14.5px; }
+    .footer__contacts a { font-weight: 700; text-decoration: none; color: var(--accent-dark); }
+    .footer__contacts a:hover { text-decoration: underline; }
+    .footer__link {
+      display: inline-block;
+      margin-top: 14px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--accent-dark);
+      text-decoration: none;
+      border-bottom: 1px dashed rgba(0, 150, 184, .5);
+      padding-bottom: 1px;
+    }
+    .footer__link:hover { color: var(--accent); text-decoration: none; }
+
+    .footer__socials {
+      display: flex;
+      gap: 10px;
+      margin-top: 16px;
+    }
+    .social-link {
+      display: inline-grid;
+      place-items: center;
+      width: 44px; height: 44px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: .02em;
+      text-decoration: none !important;
+      color: var(--ink);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      transition: transform .2s ease, background .2s ease, color .2s ease, border-color .2s ease, box-shadow .2s ease;
+    }
+    .social-link:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 18px rgba(33, 37, 41, .14);
+    }
+    .social-link--vk:hover { background: #0077ff; color: #fff; border-color: #0077ff; }
+    .social-link--ok:hover { background: #ee8208; color: #fff; border-color: #ee8208; }
+    .social-link--dzen:hover { background: #181818; color: #fff; border-color: #181818; }
+
+    .footer__legal {
+      margin-top: 26px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border);
+      font-size: 12.5px;
+      line-height: 1.7;
+      color: var(--ink-mute);
+    }
+    .footer__legal p { margin: 0; }
+    .footer__bottom {
+      margin-top: 24px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border);
+      font-size: 12.5px;
+      color: #9aa2ad;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 20px;
+      justify-content: space-between;
+    }
+    .footer__disclaimer {
+      margin: 10px 0 0;
+      font-size: 12.5px;
+      line-height: 1.7;
+      color: #9aa2ad;
+      max-width: 560px;
+    }
+
+    /* ============ АНИМАЦИИ ПРИ СКРОЛЛЕ ============ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(26px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+    .reveal.is-visible {
+      opacity: 1;
+      transform: none;
+    }
+    .no-js .reveal { opacity: 1; transform: none; }
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1; transform: none; transition: none; }
+      .chart__bar, .platform-card__live::before, .video-teacher__live-dot, .hero__badge-dot {
+        animation: none !important;
+      }
+    }
+
+    /* ============ ПРЕПОДАВАТЕЛИ ============ */
+    .teachers-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+    .teacher-card {
+      text-align: center;
+      padding: 26px 20px 24px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: 0 6px 20px rgba(33, 37, 41, .05);
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+    .teacher-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 18px 36px rgba(33, 37, 41, .1);
+    }
+    .teacher-card__photo {
+      position: relative;
+      width: 104px; height: 104px;
+      margin: 0 auto 14px;
+      border-radius: 50%;
+      overflow: hidden;
+      background: var(--bg);
+      border: 3px solid var(--white);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, .18);
+    }
+    .teacher-card__photo img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .teacher-card__photo::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border: 2px solid rgba(0, 180, 216, .55);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .teacher-card__name { font-size: 17px; font-weight: 800; color: var(--ink); }
+    .teacher-card__university {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--accent-dark);
+      margin: 3px 0 6px;
+    }
+    .teacher-card__subject {
+      display: inline-block;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--ink-soft);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 4px 12px;
+    }
+    .teacher-card__desc {
+      margin-top: 12px;
+      font-size: 14px;
+      color: var(--ink-soft);
+      line-height: 1.6;
+    }
+
+    /* ============ ОТЗЫВЫ ============ */
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+    .review-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px 22px;
+      box-shadow: 0 6px 20px rgba(33, 37, 41, .05);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .review-card__head {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .review-card__avatar {
+      flex: 0 0 auto;
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--white);
+    }
+    .review-card__who { display: grid; gap: 2px; }
+    .review-card__name { font-size: 15px; font-weight: 800; }
+    .review-card__meta { font-size: 12.5px; color: var(--ink-soft); }
+    .review-card__stars {
+      margin-left: auto;
+      font-size: 13px;
+      color: #f6b318;
+      letter-spacing: 2px;
+    }
+    .review-card__text { font-size: 14.5px; color: var(--ink-soft); line-height: 1.65; }
+    .review-card__progress {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .grade-pill {
+      font-size: 13px;
+      font-weight: 800;
+      padding: 5px 12px;
+      border-radius: 999px;
+    }
+    .grade-pill--from { background: #fff0f0; color: #e03131; }
+    .grade-pill--to { background: var(--success-soft); color: #0b7a5b; }
+    .review-card__arrow { font-size: 13px; color: var(--ink-mute); }
+
+    /* ============ СТАТИСТИКА ============ */
+    .stats-strip {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin-top: 36px;
+    }
+    .stat-cell {
+      text-align: center;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 16px 10px;
+    }
+    .stat-cell__value {
+      font-size: clamp(24px, 5vw, 32px);
+      font-weight: 800;
+      color: var(--accent);
+      line-height: 1.1;
+    }
+    .stat-cell__label { font-size: 13px; color: var(--ink-soft); }
+
+    /* ============ АДАПТИВ ============ */
+    @media (min-width: 600px) {
+      .container { padding: 0 24px; }
+      .cards-3 { grid-template-columns: repeat(2, 1fr); }
+      .teachers-grid { grid-template-columns: repeat(2, 1fr); }
+      .reviews-grid { grid-template-columns: repeat(2, 1fr); }
+      .offer__grid { grid-template-columns: repeat(2, 1fr); }
+      .float-note { display: flex; }
+      .btn { width: auto; min-width: 280px; }
+      .hero__cta .btn { min-width: 340px; }
+      .quiz-wrap { padding: 32px 30px; }
+      .footer__grid { grid-template-columns: 1.4fr 1fr; }
+
+      /* Боли и решения: 2 колонки с той же контрольной точки, что и остальные блоки,
+         с согласованным выравниванием рядов */
+      .split { grid-template-columns: 1fr 1fr; gap: 24px; align-items: stretch; }
+      .panel { display: flex; flex-direction: column; }
+      .panel__head { align-items: flex-start; min-height: 96px; }
+      .panel .item-list {
+        flex: 1 1 auto;
+        display: grid;
+        grid-template-rows: repeat(3, 1fr);
+        gap: 16px;
+        align-content: stretch;
+      }
+      .item {
+        height: 100%;
+        padding: 16px;
+        align-content: start;
+        background: linear-gradient(180deg, #fff3f3, #fffdfd);
+        border: 1px solid rgba(224, 49, 49, .25);
+        border-radius: var(--radius-sm);
+        box-shadow: 0 3px 10px rgba(224, 49, 49, .07);
+      }
+      .fix-card { height: 100%; }
+    }
+
+    @media (min-width: 900px) {
+      .section { padding: 80px 0; }
+      .nav__list { display: flex; }
+      .header-cta { display: inline-flex; }
+
+      .hero { padding: 64px 0 80px; }
+      .hero__grid { grid-template-columns: 1.05fr .95fr; gap: 48px; }
+
+      .panel { padding: 30px 28px; }
+      .cards-3 { grid-template-columns: repeat(3, 1fr); }
+      .teachers-grid { grid-template-columns: repeat(4, 1fr); }
+      .reviews-grid { grid-template-columns: repeat(3, 1fr); }
+      .stats-strip { grid-template-columns: repeat(4, 1fr); }
+
+      .offer__countdown { gap: 14px; }
+      .count-cell { min-width: 88px; }
+    }
+
+    @media (max-width: 420px) {
+      .logo__tagline { max-width: 170px; font-size: 10px; }
+      .hero__stat { flex: 1 1 100%; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Невидимый якорь для логотипов: ведёт в самое начало страницы.
+       Нельзя вешать на sticky-шапку (браузер считает её «уже видимой» и не скроллит). -->
+  <span id="page-top" style="display:block; width:1px; height:1px; position:absolute; top:0; left:0;"></span>
+
+  <!-- ============ ШАПКА ============ -->
+  <header class="site-header" id="hero">
+    <div class="container site-header__inner">
+      <a class="logo" href="#page-top" aria-label="Гекса — онлайн-школа">
+        <span class="logo__mark">Г</span>
+        <span class="logo__text">
+          <span class="logo__name">Гекса</span>
+          <span class="logo__tagline">Онлайн-школа в мини-группах до 6 человек для учеников 1–11 классов</span>
+        </span>
+      </a>
+
+      <nav class="nav" aria-label="Основная навигация">
+        <ul class="nav__list">
+          <li><a class="nav__link" href="#problems-and-solutions">Проблемы</a></li>
+          <li><a class="nav__link" href="#how-it-works">Формат</a></li>
+          <li><a class="nav__link" href="#teachers">Преподаватели</a></li>
+          <li><a class="nav__link" href="#reviews">Отзывы</a></li>
+          <li><a class="nav__link" href="#final-offer">Цена</a></li>
+        </ul>
+      </nav>
+
+      <a class="btn header-cta" href="#quiz" data-open-modal>Забронировать место</a>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ============ БЛОК 1: ПЕРВЫЙ ЭКРАН ============ -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="container hero__grid">
+
+        <div class="hero__content">
+          <span class="hero__badge"><span class="hero__badge-dot"></span> Набор в группы идёт · осталось 4 места</span>
+
+          <h1 class="hero__title" id="hero-title">
+            Подтянем оценки в школе за&nbsp;<span class="accent-strong">2 месяца</span> занятий по&nbsp;<span class="accent-strong">30 минут</span> в день
+          </h1>
+
+          <h2 class="hero__subtitle">
+            Ребёнок занимается онлайн в <strong>группах до 6 человек</strong> с преподавателями из топ-20 вузов России.
+            Если за <strong>8 занятий</strong> успеваемость не вырастет — вернём деньги.
+          </h2>
+
+          <div class="hero__cta">
+            <a class="btn" href="#quiz">Пройти тест-драйв школы и зафиксировать скидку 30%</a>
+          </div>
+
+          <ul class="trust-badges">
+            <li class="trust-badge"><svg width="16" height="16" viewBox="0 0 24 24" fill="#f6b318" aria-hidden="true"><path d="M12 2l2.9 6.26 6.85.62-5.2 4.53 1.55 6.7L12 16.6 5.9 20.1l1.55-6.7-5.2-4.53 6.85-.62L12 2z"/></svg>4.9 — 1 240+ отзывов</li>
+            <li class="trust-badge"><svg width="16" height="16" viewBox="0 0 24 24" fill="var(--success)" aria-hidden="true"><path d="M12 1l8 3v6c0 5.25-3.4 10.74-8 12-4.6-1.26-8-6.75-8-12V4l8-3zm-1.5 13.5l6-6-1.5-1.5-4.5 4.5-2-2-1.5 1.5 3.5 3.5z"/></svg>Возврат по договору</li>
+            <li class="trust-badge"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent-dark)" stroke-width="2" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/></svg>Лицензия Минобрнауки</li>
+          </ul>
+
+          <p class="hero__microtext">
+            Мы не требуем привязки карты. Оставляя заявку, вы просто бронируете за собой место в группе
+            и бесплатную консультацию методиста.
+          </p>
+
+          <ul class="hero__stats">
+            <li class="hero__stat">
+              <div class="hero__stat-value">до 6</div>
+              <div class="hero__stat-label">человек в группе</div>
+            </li>
+            <li class="hero__stat">
+              <div class="hero__stat-value">30 мин</div>
+              <div class="hero__stat-label">один урок каждый день</div>
+            </li>
+            <li class="hero__stat">
+              <div class="hero__stat-value">+1,5</div>
+              <div class="hero__stat-label">балла по школе минимум</div>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Визуал: интерфейс платформы -->
+        <div class="hero__visual" aria-hidden="true">
+          <div class="platform-card">
+            <span class="float-note">
+              <span class="float-note__cap">🎓</span>
+              <span>Преподаватель: МГУ · 7 лет опыта</span>
+            </span>
+
+            <div class="platform-card__top">
+              <span class="platform-card__room">Мини-группа «Алгебра, 7 класс»</span>
+              <span class="platform-card__live">урок идёт</span>
+            </div>
+
+            <div class="video-teacher">
+              <span class="video-teacher__frame">
+                <img class="video-teacher__img" src="teacher_woman.jpeg" alt="Мария Соколова">
+                <span class="video-teacher__live-dot" title="Преподаватель в сети"></span>
+              </span>
+              <span class="video-teacher__info">
+                <span class="video-teacher__name">Мария Соколова</span>
+                <span class="video-teacher__role">Преподаватель алгебры · МГУ им. М. В. Ломоносова</span>
+              </span>
+              <span class="video-teacher__mic" title="Микрофон включён">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="var(--accent-dark)" aria-hidden="true"><path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3zm6-3a6 6 0 0 1-12 0H4a8 8 0 0 0 7 7.9V23h2v-3.1A8 8 0 0 0 20 12h-2z"/></svg>
+              </span>
+            </div>
+
+            <div class="group-row">
+              <span class="avatar avatar--t">АС</span>
+              <span class="avatar avatar--k">КМ</span>
+              <span class="avatar avatar--d">ДМ</span>
+              <span class="avatar avatar--a">АР</span>
+              <span class="avatar avatar--e">ЕВ</span>
+              <span class="avatar avatar--p">ПК</span>
+              <span class="group-row__count">6 из 6 мест</span>
+            </div>
+
+            <div class="chart">
+              <span class="chart__bar" style="height:32%; animation-delay:.05s"></span>
+              <span class="chart__bar" style="height:45%; animation-delay:.15s"></span>
+              <span class="chart__bar" style="height:40%; animation-delay:.25s"></span>
+              <span class="chart__bar" style="height:58%; animation-delay:.35s"></span>
+              <span class="chart__bar" style="height:70%; animation-delay:.45s"></span>
+              <span class="chart__bar" style="height:82%; animation-delay:.55s"></span>
+              <span class="chart__bar chart__bar--last" style="height:96%; animation-delay:.65s"></span>
+            </div>
+            <p class="chart__caption">Прогресс успеваемости за 7 недель: <strong>+42%</strong></p>
+
+            <div class="platform-card__footer">
+              <span class="platform-pill">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 3l2.2 2.2L16.6 3l2.4 1.4L18.4 7l1.6 1.6-1.6 1.6 1.6 1.6-1.6 1.6.6 2.6-2.6.6-1.6 1.6-1.6-1.6-2.2 2.2-2.2-2.2L8 17l-1.6-1.6L8 13.8 6.4 12.2 8 10.6 7.4 8 10 7.4l1.6-1.6L13.2 7l2.2-2.2L12 3z"/></svg>
+                Запись урока в кабинете
+              </span>
+              <span class="platform-pill platform-pill--coins">🪙 120 коинов заработано</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============ БЛОК 2: ПРОБЛЕМЫ И РЕШЕНИЯ ============ -->
+    <section class="section" id="problems-and-solutions" aria-labelledby="pain-title">
+      <div class="container">
+
+        <div class="split reveal">
+
+          <!-- Боли -->
+          <div class="panel panel--pain">
+            <div class="panel__head">
+              <span class="panel__icon">⚠️</span>
+              <h2 class="panel__title" id="pain-title">Школьная программа превратилась в ежедневный стресс для всей семьи?</h2>
+            </div>
+
+            <ul class="item-list">
+              <li class="item item--pain">
+                <span class="item__mark">✕</span>
+                <span>Ребёнок часами сидит за домашним заданием, но оценки в электронном дневнике катятся вниз.
+                  Компьютерные игры и телефон вызывают больше интереса, чем учёба, а ваши попытки помочь
+                  заканчиваются ссорами.</span>
+              </li>
+              <li class="item item--pain">
+                <span class="item__mark">✕</span>
+                <span>Стандартных школьных уроков часто не хватает, чтобы по-настоящему глубоко разобраться
+                  в сложных темах. Ребёнок тратит много энергии, но результат в электронном дневнике не меняется,
+                  что подрывает его внутреннюю мотивацию учиться.</span>
+              </li>
+              <li class="item item--pain">
+                <span class="item__mark">✕</span>
+                <span>Скоро экзамены, а на найм репетиторов по 3 предметам уходит половина семейного бюджета.
+                  Вы переживаете, что без дорогой подготовки ребёнок не наберёт баллы для поступления
+                  на бюджет и упустит время.</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Решения -->
+          <div class="panel panel--fix">
+            <div class="panel__head">
+              <span class="panel__icon">✅</span>
+              <h2 class="panel__title">Как онлайн-школа «Гекса» решает эти проблемы за 8 недель</h2>
+            </div>
+
+            <ul class="item-list">
+              <li class="fix-card">
+                <p class="fix-card__do"><span class="item__mark" style="background:var(--success-soft);color:var(--success)">✓</span>
+                  Мы вовлекаем в учёбу через геймификацию и интерактивную платформу
+                </p>
+                <p class="fix-card__arrow">→ ваш результат</p>
+                <p class="fix-card__result">Вы <strong>навсегда забываете про контроль домашки</strong>, а ребёнок
+                  сам ждёт начала следующего урока.</p>
+              </li>
+              <li class="fix-card">
+                <p class="fix-card__do"><span class="item__mark" style="background:var(--success-soft);color:var(--success)">✓</span>
+                  Мы обучаем в мини-группах до 6 человек, где преподаватель разбирает ошибки каждого ученика
+                </p>
+                <p class="fix-card__arrow">→ ваш результат</p>
+                <p class="fix-card__result">Ребёнок закрывает пробелы в знаниях, обретает уверенность и повышает
+                  балл в школе <strong>минимум на 1,5 пункта</strong>.</p>
+              </li>
+              <li class="fix-card">
+                <p class="fix-card__do"><span class="item__mark" style="background:var(--success-soft);color:var(--success)">✓</span>
+                  Мы предлагаем комплексную подготовку по единой фиксированной цене
+                </p>
+                <p class="fix-card__arrow">→ ваш результат</p>
+                <p class="fix-card__result">Вы экономите <strong>до 40 000 ₽ в месяц</strong> по сравнению с обычными
+                  репетиторами и получаете гарантию поступления на бюджет по договору.</p>
+              </li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ БЛОК 3: ИНТЕРАКТИВНЫЙ ФОРМАТ ============ -->
+    <section class="section section--white" id="how-it-works" aria-labelledby="format-title">
+      <div class="container">
+        <h2 class="section-title" id="format-title"><span class="accent-strong">30 минут</span> увлечённой работы вместо <span class="accent-strong">2 часов зубрёжки</span></h2>
+        <p class="section-subtitle">Формат «Гексы» устроен так, чтобы ребёнок хотел возвращаться на уроки,
+          а не уклонялся от них.</p>
+
+        <div class="cards-3 reveal">
+          <article class="feature-card">
+            <span class="feature-card__num">01</span>
+            <div class="feature-card__icon">🎮</div>
+            <span class="feature-card__label">Платформа</span>
+            <h3 class="feature-card__title">Учёба как любимая игра</h3>
+            <p class="feature-card__text">Ребёнок занимается на интерактивной платформе «Гекса», где вместо скучных
+              учебников — симуляторы, комиксы и элементы геймификации. За правильные ответы начисляются коины,
+              которые можно обменять на реальные мерч-призы школы.</p>
+          </article>
+
+          <article class="feature-card">
+            <span class="feature-card__num">02</span>
+            <div class="feature-card__icon">👥</div>
+            <span class="feature-card__label">Динамика группы</span>
+            <h3 class="feature-card__title">Внимание каждому из 6</h3>
+            <p class="feature-card__text">В группе всего до 6 человек. Преподаватель не читает лекцию, а вовлекает
+              каждого: дети работают на общей онлайн-доске, соревнуются в мини-викторинах и разбирают сложные
+              кейсы в командах.</p>
+          </article>
+
+          <article class="feature-card">
+            <span class="feature-card__num">03</span>
+            <div class="feature-card__icon">🎬</div>
+            <span class="feature-card__label">Контроль</span>
+            <h3 class="feature-card__title">Ничего не теряется</h3>
+            <p class="feature-card__text">Запись каждого урока сохраняется в личном кабинете. Если ребёнок пропустил
+              занятие по болезни, он может пересмотреть его в любое время и задать вопрос куратору в чате.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ ПРЕПОДАВАТЕЛИ ============ -->
+    <section class="section section--dark" id="teachers" aria-labelledby="teachers-title">
+      <div class="container">
+        <h2 class="section-title" id="teachers-title">С ребёнком занимаются преподаватели из <span class="accent-strong">топ-20 вузов России</span></h2>
+        <p class="section-subtitle">Все педагоги «Гексы» проходят трёхэтапный отбор и ежегодно повышают квалификацию.
+          Познакомьтесь с теми, кто ведёт мини-группы.</p>
+
+        <div class="teachers-grid">
+          <article class="teacher-card reveal">
+            <div class="teacher-card__photo"><img src="teacher_woman.jpeg" alt="Мария Соколова — преподаватель математики"></div>
+            <h3 class="teacher-card__name">Мария Соколова</h3>
+            <p class="teacher-card__university">МГУ им. М. В. Ломоносова</p>
+            <span class="teacher-card__subject">Математика · 7 лет опыта</span>
+            <p class="teacher-card__desc">Учитель высшей категории. Подготовила 40+ призёров олимпиад и ведёт в «Гексе» группы 5–9 классов.</p>
+          </article>
+
+          <article class="teacher-card reveal">
+            <div class="teacher-card__photo"><img src="teacher_man-2.jpg" alt="Дмитрий Абрамов — преподаватель физики"></div>
+            <h3 class="teacher-card__name">Дмитрий Абрамов</h3>
+            <p class="teacher-card__university">МФТИ</p>
+            <span class="teacher-card__subject">Физика и информатика · 9 лет опыта</span>
+            <p class="teacher-card__desc">Выпускник Физтеха. Разбирает задачи так, что дети сами просят «ещё одну». Ведёт подготовку к ОГЭ и ЕГЭ.</p>
+          </article>
+
+          <article class="teacher-card reveal">
+            <div class="teacher-card__photo"><img src="teacher_english_woman.jpg" alt="Алина Ковалёва — преподаватель английского языка"></div>
+            <h3 class="teacher-card__name">Алина Ковалёва</h3>
+            <p class="teacher-card__university">НИУ ВШЭ</p>
+            <span class="teacher-card__subject">Английский язык · 6 лет опыта</span>
+            <p class="teacher-card__desc">Уровень C2, IELTS 8.5. Готовит к ОГЭ, ЕГЭ и кембриджским экзаменам, говорит с детьми только на английском.</p>
+          </article>
+
+          <article class="teacher-card reveal">
+            <div class="teacher-card__photo"><img src="teacher_man.webp" alt="Виктор Смирнов — преподаватель русского языка"></div>
+            <h3 class="teacher-card__name">Виктор Смирнов</h3>
+            <p class="teacher-card__university">СПбГУ</p>
+            <span class="teacher-card__subject">Русский язык и литература · 8 лет опыта</span>
+            <p class="teacher-card__desc">Специалист по «сложным» подросткам. Помогает полюбить чтение и вытаскивает грамотность без зубрёжки правил.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ ОТЗЫВЫ ============ -->
+    <section class="section section--white" id="reviews" aria-labelledby="reviews-title">
+      <div class="container">
+        <h2 class="section-title" id="reviews-title">Что говорят родители наших учеников</h2>
+        <p class="section-subtitle">Реальные отзывы о занятиях в мини-группах «Гексы» — с цифрами до и после.</p>
+
+        <div class="reviews-grid">
+          <article class="review-card reveal">
+            <div class="review-card__head">
+              <span class="review-card__avatar" style="background:linear-gradient(135deg,#faa2c1,#e64980)">ОК</span>
+              <div class="review-card__who">
+                <p class="review-card__name">Ольга Казакова</p>
+                <p class="review-card__meta">Мама Никиты, 7 класс</p>
+              </div>
+              <span class="review-card__stars">★★★★★</span>
+            </div>
+            <p class="review-card__text">Через месяц сын сам сел за уроки без напоминаний. По алгебре вышли на твёрдую четвёрку,
+              а главное — из дома исчезли скандалы из-за домашних заданий.</p>
+            <div class="review-card__progress">
+              <span class="grade-pill grade-pill--from">Было: 3,2</span>
+              <span class="review-card__arrow">→</span>
+              <span class="grade-pill grade-pill--to">Стало: 4,5</span>
+            </div>
+          </article>
+
+          <article class="review-card reveal">
+            <div class="review-card__head">
+              <span class="review-card__avatar" style="background:linear-gradient(135deg,#74c0fc,#339af0)">ИВ</span>
+              <div class="review-card__who">
+                <p class="review-card__name">Игорь Ветров</p>
+                <p class="review-card__meta">Папа Алисы, 9 класс</p>
+              </div>
+              <span class="review-card__stars">★★★★★</span>
+            </div>
+            <p class="review-card__text">Готовились к ОГЭ по физике в группе с 1 февраля. Ребёнок боялся экзамена, а в итоге
+              получил 34 балла из 40. Отдельное спасибо за записи уроков — наверстывали после болезни без проблем.</p>
+            <div class="review-card__progress">
+              <span class="grade-pill grade-pill--from">Пробник: 14</span>
+              <span class="review-card__arrow">→</span>
+              <span class="grade-pill grade-pill--to">ОГЭ: 34</span>
+            </div>
+          </article>
+
+          <article class="review-card reveal">
+            <div class="review-card__head">
+              <span class="review-card__avatar" style="background:linear-gradient(135deg,#69db7c,#2f9e44)">НЛ</span>
+              <div class="review-card__who">
+                <p class="review-card__name">Наталия Литвинова</p>
+                <p class="review-card__meta">Мама Егора, 11 класс</p>
+              </div>
+              <span class="review-card__stars">★★★★★</span>
+            </div>
+            <p class="review-card__text">Экономия по сравнению с репетиторами — больше 30 тысяч в месяц, а результат лучше.
+              Егор уверенно идёт на бюджет в технический вуз. Спасибо «Гексе» за честную цену и гарантию по договору.</p>
+            <div class="review-card__progress">
+              <span class="grade-pill grade-pill--from">Тройки по алгебре</span>
+              <span class="review-card__arrow">→</span>
+              <span class="grade-pill grade-pill--to">Балл 4,8</span>
+            </div>
+          </article>
+        </div>
+
+        <div class="stats-strip">
+          <div class="stat-cell reveal">
+            <div class="stat-cell__value">6 500+</div>
+            <div class="stat-cell__label">учеников прошли обучение</div>
+          </div>
+          <div class="stat-cell reveal">
+            <div class="stat-cell__value">87%</div>
+            <div class="stat-cell__label">подтянули оценки в школе</div>
+          </div>
+          <div class="stat-cell reveal">
+            <div class="stat-cell__value">92%</div>
+            <div class="stat-cell__label">доводят группу до конца года</div>
+          </div>
+          <div class="stat-cell reveal">
+            <div class="stat-cell__value">4.9/5</div>
+            <div class="stat-cell__label">средняя оценка от родителей</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ БЛОК FAQ ============ -->
+    <section class="section section--white" id="faq" aria-labelledby="faq-title">
+      <div class="container">
+        <h2 class="section-title" id="faq-title">Частые вопросы родителей</h2>
+        <p class="section-subtitle">Коротко о формате, гарантиях и оплате — чтобы решение было спокойным и осознанным.</p>
+
+        <div class="faq-list reveal">
+          <details class="faq-item">
+            <summary class="faq-item__q">Как проходит тест-драйв школы?</summary>
+            <div class="faq-item__a">
+              <p>Пройдите короткий тест из 4 вопросов — по ответам мы поймём класс и исходный уровень ребёнка.
+                После теста откроется форма заявки: на указанную почту придут результаты анализа и гайд
+                «Как подтянуть оценки за 8 недель», а методист в течение 15 минут свяжется с вами и зафиксирует
+                скидку 30% на тест-драйв. Карта на этом этапе не нужна.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-item__q">Почему группы до 6 человек?</summary>
+            <div class="faq-item__a">
+              <p>Группы формируются по классу и предмету, в каждой — не больше 6 учеников. Такое количество
+                позволяет преподавателю вовлечь каждого: общая онлайн-доска, мини-викторины, разбор сложных
+                заданий в командах. Ребёнок получает внимание почти как на индивидуальных занятиях, но с драйвом
+                от соревнования и ценой заметно ниже репетитора.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-item__q">Кто будет заниматься с моим ребёнком?</summary>
+            <div class="faq-item__a">
+              <p>Занятия ведут преподаватели из топ-20 вузов России — МГУ, МФТИ, НИУ ВШЭ и СПбГУ — с опытом
+                от 5 лет. На тест-драйве ребёнок позанимается с тем преподавателем, который ведёт группу
+                по нужному предмету и классу.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-item__q">Что гарантирует школа?</summary>
+            <div class="faq-item__a">
+              <p>Гарантия закреплена в договоре: если за первые 8 занятий успеваемость не вырастет, мы вернём
+                деньги. Все условия фиксируются письменно до начала занятий — никаких устных обещаний.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-item__q">Можно ли вернуть деньги, если формат не подошёл?</summary>
+            <div class="faq-item__a">
+              <p>Да. Если после первого оплаченного урока вы решите, что мини-группы — не ваш формат, мы вернём
+                на карту все 8 995 рублей в течение 15 минут: без заявлений, объяснений и дополнительных условий.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-item__q">Сколько стоят занятия и что входит в цену?</summary>
+            <div class="faq-item__a">
+              <p>По акции занятия в мини-группе стоят 8 995 руб./мес вместо базовых 12 850 руб. В стоимость входят
+                живые уроки на интерактивной платформе «Гекса», все материалы для занятий, записи каждого урока
+                и поддержка куратора.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-item__q">Сколько времени нужно уделять занятиям?</summary>
+            <div class="faq-item__a">
+              <p>Ребёнку хватает 30 минут в день: формат построен так, чтобы поднять успеваемость за 2 месяца
+                без зубрёжки. Если занятие пропущено по болезни, запись урока сохраняется в личном кабинете —
+                наверстать можно в удобное время, а вопросы задать куратору в чате.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-item__q">Для каких классов занятия и что нужно для них?</summary>
+            <div class="faq-item__a">
+              <p>Онлайн-школа «Гекса» принимает учеников с 1-го по 11-й класс. Основные направления — математика,
+                физика, русский и английский язык. От вас нужны только компьютер или планшет с доступом в интернет:
+                платформа и все материалы уже входят в стоимость.</p>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ БЛОК 4: КВИЗ ============ -->
+    <section class="section" id="quiz" aria-labelledby="quiz-title">
+      <div class="container">
+        <h2 class="section-title" id="quiz-title">Узнайте, какой тип мышления у вашего ребёнка и как повысить
+          его успеваемость без зубрёжки за 2 месяца</h2>
+        <p class="section-subtitle">Ответьте на 4 простых вопроса, чтобы получить персональную стратегию обучения
+          и забронировать скидку 30%.</p>
+
+        <div class="quiz-wrap reveal">
+
+          <!-- Прогресс -->
+          <div class="quiz__meta">
+            <span class="quiz__meta-step" id="quizStepLabel">Вопрос 1 из 4</span>
+            <span id="quizPercent">20%</span>
+          </div>
+          <div class="quiz__bar" role="progressbar" aria-label="Прогресс теста" aria-valuemin="0" aria-valuemax="100" aria-valuenow="20">
+            <div class="quiz__bar-fill" id="quizBarFill"></div>
+          </div>
+
+          <form id="quizForm" novalidate>
+
+            <!-- Шаг 1 -->
+            <div class="quiz-step is-active" data-step="0">
+              <h3 class="quiz-step__title">В каком классе учится ваш ребёнок?</h3>
+              <div class="quiz-options">
+                <button type="button" class="quiz-option" data-value="1–4 класс">1–4 класс</button>
+                <button type="button" class="quiz-option" data-value="5–8 класс">5–8 класс</button>
+                <button type="button" class="quiz-option" data-value="9 класс">9 класс</button>
+                <button type="button" class="quiz-option" data-value="10–11 класс">10–11 класс</button>
+              </div>
+            </div>
+
+            <!-- Шаг 2 -->
+            <div class="quiz-step" data-step="1">
+              <h3 class="quiz-step__title">С какой главной сложностью в учебе вы сталкиваетесь чаще всего?</h3>
+              <div class="quiz-options">
+                <button type="button" class="quiz-option" data-value="Домашка со скандалами">Долго и со скандалами сидит за домашним заданием</button>
+                <button type="button" class="quiz-option" data-value="Учитель не успевает">Учитель в школе не успевает объяснить тему</button>
+                <button type="button" class="quiz-option" data-value="Боится доски">Ребёнок боится выходить к доске</button>
+                <button type="button" class="quiz-option" data-value="Переживаем из-за экзаменов">Переживаем из-за предстоящих экзаменов</button>
+              </div>
+            </div>
+
+            <!-- Шаг 3 -->
+            <div class="quiz-step" data-step="2">
+              <h3 class="quiz-step__title">Какой предмет или направление вызывает наибольшие трудности?</h3>
+              <div class="quiz-options">
+                <button type="button" class="quiz-option" data-value="Математика">Математика / Алгебра / Геометрия</button>
+                <button type="button" class="quiz-option" data-value="Русский и литература">Русский язык / Литература</button>
+                <button type="button" class="quiz-option" data-value="Естественные науки">Физика / Химия / Биология</button>
+                <button type="button" class="quiz-option" data-value="Английский язык">Английский язык</button>
+                <button type="button" class="quiz-option" data-value="Логика и IT">Хотим развивать логику и IT</button>
+              </div>
+            </div>
+
+            <!-- Шаг 4 -->
+            <div class="quiz-step" data-step="3">
+              <h3 class="quiz-step__title">Был ли у ребёнка опыт обучения в онлайн-формате?</h3>
+              <div class="quiz-options">
+                <button type="button" class="quiz-option" data-value="Опыт есть">Да, занимались</button>
+                <button type="button" class="quiz-option" data-value="Опыта нет">Нет, сомневаемся</button>
+                <button type="button" class="quiz-option" data-value="Негативный опыт">Был негативный опыт</button>
+              </div>
+            </div>
+
+            <!-- Финальный шаг: форма захвата -->
+            <div class="quiz-step" data-step="4">
+              <h3 class="quiz-step__title">Тест пройден! Мы уже формируем персональный план обучения для вашего
+                ребёнка.</h3>
+
+              <div class="lead-form">
+                <button type="submit" class="btn">Получить результаты теста и забронировать место</button>
+                <p class="form-note">Пришлём результаты анализа и гайд на указанную почту
+                  и закрепим скидку 30% за вами.</p>
+              </div>
+
+              <div class="form-success" id="formSuccess" role="status">
+                <div class="form-success__icon">🎉</div>
+                <p class="form-success__title">Заявка принята!</p>
+                <p class="form-success__text" id="quizFormSuccessText">Гайд «Как подтянуть оценки за 8 недель» и результаты теста уже отправлены
+                  на вашу почту. Скидка 30% закреплена за вами — заполните короткую форму заявки, и методист
+                  свяжется с вами, чтобы подобрать группу.</p>
+                <a class="btn form-success__btn" href="#quiz" data-open-modal>Заполнить форму заявки</a>
+              </div>
+            </div>
+
+          </form>
+
+          <div class="quiz__footer">
+            <button type="button" class="quiz__back" id="quizBack" hidden>← Назад</button>
+            <span class="quiz__hint" id="quizHint">Выберите один из вариантов ответа</span>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ БЛОК 5: ФИНАЛЬНЫЙ ОФФЕР ============ -->
+    <section class="offer" id="final-offer" aria-labelledby="offer-title">
+      <div class="container">
+        <h2 class="section-title" id="offer-title">Зафиксируйте цену на обучение в школе «Гекса» (Hexa-School) при бронировании места сегодня</h2>
+        <p class="section-subtitle">Стоимость фиксируется в договоре и не меняется до конца учебного года —
+          даже если мы поднимем цены.</p>
+
+        <!-- Карточка тарифа (полностью кликабельна — открывает форму заявки) -->
+        <div class="price-card reveal" role="button" tabindex="0" data-open-modal
+             aria-label="Открыть форму заявки и забронировать цену 8 995 рублей в месяц">
+          <span class="price-card__badge">−30%</span>
+          <span class="price-card__plan">Помесячная оплата</span>
+          <span class="price-card__old">12 850 руб. / мес.</span>
+          <span class="price-card__new">8 995 <span>руб. / мес.</span></span>
+          <span class="price-card__save">Ваша экономия — 3 855 рублей каждый месяц</span>
+          <span class="price-card__alt">Или годовой курс за <strong>71 900 руб.</strong> вместо 102 800 руб.</span>
+          <span class="btn price-card__btn">Забрать за 8995 руб./мес.</span>
+        </div>
+
+        <div class="offer__countdown" aria-hidden="true">
+          <div class="count-cell"><div class="count-cell__value" id="cdDays">00</div><div class="count-cell__label">дней</div></div>
+          <div class="count-cell"><div class="count-cell__value" id="cdHours">00</div><div class="count-cell__label">часов</div></div>
+          <div class="count-cell"><div class="count-cell__value" id="cdMins">00</div><div class="count-cell__label">минут</div></div>
+          <div class="count-cell"><div class="count-cell__value" id="cdSecs">00</div><div class="count-cell__label">секунд</div></div>
+        </div>
+
+        <div class="offer__grid reveal">
+          <div class="offer-box offer-box--urgent">
+            <p class="offer-box__head"><span class="offer-box__emoji">⏰</span> Ограниченное место в наборе</p>
+            <p class="offer-box__text">До завершения набора в группы по стоимости <strong>8 995 руб./мес.</strong>
+              осталось <strong>4 места</strong>. С завтрашнего дня скидка 30% сгорает, и цена вернётся
+              к базовым <strong>12 850 руб.</strong> из-за укомплектованности потока.</p>
+          </div>
+
+          <div class="offer-box offer-box--safe">
+            <p class="offer-box__head"><span class="offer-box__emoji">🛡️</span> Снятие риска</p>
+            <p class="offer-box__text"><strong>Безопасный тест-драйв:</strong> если после первого оплаченного урока
+              вы решите, что формат мини-групп вам не подходит, мы переведём обратно все <strong>8 995 рублей</strong>
+              на вашу карту <strong>в течение 15 минут</strong> без заявлений и объяснений.</p>
+          </div>
+        </div>
+
+        <div class="offer__cta">
+          <a class="btn" href="#quiz">Пройти тест-драйв и зафиксировать цену со скидкой 30%</a>
+          <p class="offer__micro">Осталось 4 из 24 мест в потоке · Карта для оплаты не требуется</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============ ФУТЕР ============ -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div>
+          <a class="logo" href="#page-top" aria-label="Гекса — онлайн-школа">
+            <span class="logo__mark">Г</span>
+            <span class="logo__text"><span class="logo__name">Гекса</span></span>
+          </a>
+          <p class="footer__text">Онлайн-школа в мини-группах до 6 человек для учеников 1–11 классов.
+            Занятия на интерактивной платформе с преподавателями из топ-20 вузов России.
+            Гарантия результата за 8 занятий или возврат денег по договору.</p>
+          <a class="footer__link" href="privacy.html" aria-label="Политика обработки персональных данных">Политика обработки персональных данных</a>
+        </div>
+
+        <div class="footer__contacts">
+          <a href="tel:+78000000000">8 800 000-00-00</a>
+          <a href="mailto:hello@hexa.school">hello@hexa.school</a>
+          <span style="color:var(--ink-soft); font-size:13.5px;">Пн–Пт, 9:00–21:00 (МСК)</span>
+
+          <div class="footer__socials">
+            <a class="social-link social-link--vk" href="#" aria-label="ВКонтакте" title="ВКонтакте">VK</a>
+            <a class="social-link social-link--ok" href="#" aria-label="Одноклассники" title="Одноклассники">OK</a>
+            <a class="social-link social-link--dzen" href="#" aria-label="Дзен" title="Дзен">Дзен</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer__legal">
+        <p>ООО «Гекса Эдьюкейшн» · ИНН 7723456789 · ОГРН 1247700123456</p>
+        <p>Юридический адрес: 125167, г. Москва, Ленинградский проспект, д. 37, корп. 4, пом. I, ком. 12</p>
+      </div>
+
+      <div class="footer__bottom">
+        <span>© 2026 ООО «Гекса Эдьюкейшн». Все права защищены.</span>
+        <span>Не является публичной офертой. Результаты обучения индивидуальны.</span>
+      </div>
+
+      <p class="footer__disclaimer">Сайт является учебным проектом. Все данные на сайте — преподаватели, отзывы,
+        статистика, реквизиты и контакты — вымышленные и не связаны с реальными лицами и организациями.
+        Оферта на сайте не заключается.</p>
+    </div>
+  </footer>
+
+  <!-- ============ МОДАЛЬНОЕ ОКНО: ФОРМА ЗАЯВКИ (Яндекс Форма) ============ -->
+  <div class="modal" id="leadModal" role="dialog" aria-modal="true" aria-label="Форма заявки" aria-hidden="true">
+    <button class="modal__overlay" type="button" data-close-modal aria-label="Закрыть форму"></button>
+
+    <div class="modal__dialog modal__dialog--yform">
+      <button class="modal__close" type="button" data-close-modal aria-label="Закрыть форму">&times;</button>
+
+      <div class="yform-frame" id="yformFrame">
+        <div class="yform-frame__loader" aria-hidden="true">
+          <span class="yform-frame__spinner"></span>
+        </div>
+        <iframe src="https://forms.yandex.ru/u/6abe0d58eb614628e9b06645/?iframe=1"
+          title="Форма заявки онлайн-школы «Гекса»"
+          loading="lazy"
+          allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      'use strict';
+
+      document.documentElement.classList.remove('no-js');
+
+      /* ============ КВИЗ ============ */
+      var steps = Array.prototype.slice.call(document.querySelectorAll('.quiz-step'));
+      var options = Array.prototype.slice.call(document.querySelectorAll('.quiz-option'));
+      var backBtn = document.getElementById('quizBack');
+      var stepLabel = document.getElementById('quizStepLabel');
+      var percentLabel = document.getElementById('quizPercent');
+      var barFill = document.getElementById('quizBarFill');
+      var bar = barFill.parentElement;
+      var hint = document.getElementById('quizHint');
+      var form = document.getElementById('quizForm');
+      var successBox = document.getElementById('formSuccess');
+
+      var TOTAL_QUESTIONS = 4;      // финальный шаг (индекс 4) — форма
+      var current = 0;
+      var answers = {};
+
+      function render() {
+        steps.forEach(function (step, i) {
+          step.classList.toggle('is-active', i === current);
+        });
+
+        var percent = Math.round(((current + 1) / steps.length) * 100);
+        barFill.style.width = percent + '%';
+        percentLabel.textContent = percent + '%';
+        bar.setAttribute('aria-valuenow', String(percent));
+
+        if (current < TOTAL_QUESTIONS) {
+          stepLabel.textContent = 'Вопрос ' + (current + 1) + ' из ' + TOTAL_QUESTIONS;
+          hint.textContent = 'Выберите один из вариантов ответа';
+          hint.style.display = '';
+        } else {
+          stepLabel.textContent = 'Финальный шаг';
+          hint.textContent = 'Осталось указать контакты';
+          hint.style.display = '';
+        }
+
+        backBtn.hidden = current === 0;
+
+        // подсветка ранее выбранного ответа
+        var activeStep = steps[current];
+        var saved = answers[current];
+        Array.prototype.forEach.call(activeStep.querySelectorAll('.quiz-option'), function (btn) {
+          btn.classList.toggle('is-selected', btn.dataset.value === saved);
+        });
+      }
+
+      options.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var stepEl = btn.closest('.quiz-step');
+          var stepIndex = Number(stepEl.dataset.step);
+
+          answers[stepIndex] = btn.dataset.value;
+
+          Array.prototype.forEach.call(stepEl.querySelectorAll('.quiz-option'), function (b) {
+            b.classList.remove('is-selected');
+          });
+          btn.classList.add('is-selected');
+
+          window.setTimeout(function () {
+            if (current < steps.length - 1) {
+              current += 1;
+              render();
+            }
+          }, 180);
+        });
+      });
+
+      backBtn.addEventListener('click', function () {
+        if (current > 0) {
+          current -= 1;
+          render();
+        }
+      });
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        // Данные квиза готовы к отправке на бэкенд:
+        // console.log({ answers: answers });
+        // Контакты собирает форма заявки, открываемая после квиза.
+
+        Array.prototype.forEach.call(form.elements, function (el) { el.style.display = 'none'; });
+        hint.style.display = 'none';
+        backBtn.hidden = true;
+        successBox.classList.add('is-visible');
+        stepLabel.textContent = 'Готово';
+        percentLabel.textContent = '100%';
+        barFill.style.width = '100%';
+
+        // Открываем общую форму заявки
+        openModal();
+      });
+
+      render();
+
+      /* ============ МОДАЛЬНОЕ ОКНО (Яндекс Форма) ============ */
+      var modal = document.getElementById('leadModal');
+      var yformFrame = document.getElementById('yformFrame');
+      var lastFocused = null;
+
+      function openModal() {
+        lastFocused = document.activeElement;
+        modal.classList.add('is-open');
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeModal() {
+        modal.classList.remove('is-open');
+        modal.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+        if (lastFocused && lastFocused.focus) lastFocused.focus();
+      }
+
+      // Прячем спиннер, как только Яндекс Форма загрузилась
+      if (yformFrame) {
+        var yformIframe = yformFrame.querySelector('iframe');
+        if (yformIframe) {
+          yformIframe.addEventListener('load', function () {
+            yformFrame.classList.add('is-loaded');
+          });
+        }
+      }
+
+      // Открытие по любой кнопке с атрибутом data-open-modal
+      // (шапка «Забронировать место», карточка тарифа, экран успеха квиза)
+      document.addEventListener('click', function (e) {
+        var opener = e.target.closest('[data-open-modal]');
+        if (opener) {
+          e.preventDefault();
+          openModal();
+          return;
+        }
+        if (e.target.closest('[data-close-modal]')) {
+          closeModal();
+        }
+      });
+
+      // Закрытие по Escape + клавиатурный доступ к кликабельной карточке тарифа
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && modal.classList.contains('is-open')) closeModal();
+
+        if ((e.key === 'Enter' || e.key === ' ') && document.activeElement) {
+          var card = document.activeElement.closest('.price-card[data-open-modal]');
+          if (card) {
+            e.preventDefault();
+            openModal();
+          }
+        }
+      });
+
+      /* ============ ТАЙМЕР СРОЧНОСТИ (24 часа от первого визита) ============ */
+      var STORAGE_KEY = 'hexa_offer_deadline';
+      var deadline = Number(sessionStorage.getItem(STORAGE_KEY));
+      if (!deadline) {
+        deadline = Date.now() + 24 * 60 * 60 * 1000;
+        sessionStorage.setItem(STORAGE_KEY, String(deadline));
+      }
+
+      var els = {
+        d: document.getElementById('cdDays'),
+        h: document.getElementById('cdHours'),
+        m: document.getElementById('cdMins'),
+        s: document.getElementById('cdSecs')
+      };
+
+      function pad(n) { return n < 10 ? '0' + n : String(n); }
+
+      function tick() {
+        var diff = Math.max(0, deadline - Date.now());
+        var secs = Math.floor(diff / 1000);
+        els.d.textContent = pad(Math.floor(secs / 86400));
+        els.h.textContent = pad(Math.floor(secs % 86400 / 3600));
+        els.m.textContent = pad(Math.floor(secs % 3600 / 60));
+        els.s.textContent = pad(secs % 60);
+      }
+
+      tick();
+      window.setInterval(tick, 1000);
+
+      /* ============ REVEAL ПРИ СКРОЛЛЕ ============ */
+      var revealEls = document.querySelectorAll('.reveal');
+      if ('IntersectionObserver' in window) {
+        var revealObserver = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              revealObserver.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.15 });
+        Array.prototype.forEach.call(revealEls, function (el) { revealObserver.observe(el); });
+      } else {
+        Array.prototype.forEach.call(revealEls, function (el) { el.classList.add('is-visible'); });
+      }
+    })();
+  </script>
+
+</body>
+</html>
