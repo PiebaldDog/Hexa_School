@@ -202,6 +202,64 @@
       width: auto;
     }
 
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* Бургер: на десктопе скрыт, на мобильных включается в @media (max-width: 899px) */
+    .burger {
+      display: none;
+      place-items: center;
+      gap: 5px;
+      width: 44px;
+      height: 44px;
+      padding: 0;
+      color: var(--ink);
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background .2s ease, border-color .2s ease;
+    }
+    .burger:hover,
+    .burger:focus-visible {
+      background: var(--accent-soft);
+      border-color: #bdeef8;
+    }
+    .burger span {
+      display: block;
+      width: 20px;
+      height: 2.4px;
+      border-radius: 3px;
+      background: currentColor;
+      transition: transform .25s ease, opacity .2s ease;
+    }
+    .burger.is-open span:nth-child(1) { transform: translateY(7.4px) rotate(45deg); }
+    .burger.is-open span:nth-child(2) { opacity: 0; }
+    .burger.is-open span:nth-child(3) { transform: translateY(-7.4px) rotate(-45deg); }
+
+    /* Кнопка заявки внутри мобильного меню (на десктопе не показываем) */
+    .nav__cta {
+      display: none;
+      margin-top: 8px;
+      padding: 14px 16px;
+      font-size: 15px;
+      font-weight: 700;
+      text-align: center;
+      color: var(--white);
+      background: var(--accent);
+      border-radius: var(--radius-sm);
+      box-shadow: var(--shadow-accent);
+      transition: background .2s ease;
+    }
+    .nav__cta:hover,
+    .nav__cta:focus-visible {
+      color: var(--white);
+      background: var(--accent-dark);
+    }
+
     .hero {
       padding: 40px 0 56px;
       background:
@@ -1197,10 +1255,68 @@
       to   { opacity: 1; transform: translateY(0) scale(1); }
     }
 
+    /* Модалка с Яндекс Формой: шапка липкая, высота формы считается явно,
+       чтобы низ формы с кнопкой не уезжал за край на невысоких экранах */
     .modal__dialog--yform {
       max-width: 560px;
-      padding: 18px;
+      padding: 0;
     }
+
+    /* Шапка модалки: цена и обещание — чтобы не забыть, зачем открыли */
+    .modal__head {
+      position: sticky;
+      top: 0;
+      z-index: 3;
+      padding: 20px 20px 16px;
+      text-align: center;
+      background: var(--white);
+      background-image: linear-gradient(180deg, var(--accent-soft) 0%, rgba(255, 255, 255, 0) 100%);
+      border-bottom: 1px solid var(--border);
+    }
+    .modal__badge {
+      display: inline-block;
+      padding: 6px 14px;
+      margin-bottom: 13px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--accent-dark);
+      background: var(--white);
+      border: 1px solid #bdeef8;
+      border-radius: 999px;
+      box-shadow: 0 8px 18px -10px rgba(0, 180, 216, .85);
+    }
+    .modal__title {
+      font-size: clamp(20px, 4.6vw, 25px);
+      font-weight: 800;
+      line-height: 1.25;
+      letter-spacing: -.01em;
+      margin-bottom: 9px;
+    }
+    .modal__title strong { color: var(--accent-dark); }
+    .modal__subtitle {
+      font-size: 14.5px;
+      line-height: 1.55;
+      color: var(--ink-soft);
+      max-width: 42ch;
+      margin: 0 auto;
+    }
+    .modal__body { padding: 14px 18px 16px; }
+    .modal__note {
+      margin-top: 12px;
+      text-align: center;
+      font-size: 12.5px;
+      line-height: 1.55;
+      color: var(--ink-mute);
+    }
+    .modal__note a {
+      color: var(--accent-dark);
+      font-weight: 600;
+      text-decoration: underline;
+      text-decoration-color: rgba(0, 150, 184, .4);
+      text-underline-offset: 2px;
+    }
+    .modal__note a:hover { color: var(--accent); }
+
     .yform-frame {
       position: relative;
       background: var(--white);
@@ -1210,7 +1326,8 @@
     .yform-frame iframe {
       display: block;
       width: 100%;
-      height: 640px;
+      height: min(620px, calc(100vh - 290px));
+      min-height: 300px;
       border: 0;
     }
     .yform-frame__loader {
@@ -1226,6 +1343,8 @@
       opacity: 0;
       visibility: hidden;
     }
+    /* Страховка: если что-то пошло не так, спиннер исчезает и показывается ссылка */
+    .yform-frame.is-failed .yform-frame__loader { display: none; }
     .yform-frame__spinner {
       width: 38px;
       height: 38px;
@@ -1236,86 +1355,65 @@
     }
     @keyframes yformSpin { to { transform: rotate(360deg); } }
 
+    .modal__fallback {
+      margin-top: 12px;
+      padding: 12px 14px;
+      font-size: 13.5px;
+      line-height: 1.5;
+      text-align: center;
+      color: var(--ink-soft);
+      background: var(--alert-soft);
+      border: 1px solid #ffd8b0;
+      border-radius: var(--radius-sm);
+    }
+    .modal__fallback[hidden] { display: none; }
+    .modal__fallback a {
+      color: var(--accent-dark);
+      font-weight: 600;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
     @media (max-width: 599px) {
-      .modal__dialog--yform { padding: 14px; }
-      .yform-frame iframe { height: calc(100vh - 130px); min-height: 420px; }
+      .modal__head { padding: 16px 14px 13px; }
+      .modal__head .modal__badge { font-size: 12.5px; padding: 5px 12px; }
+      .modal__body { padding: 12px 14px 14px; }
+      .yform-frame iframe { height: min(620px, calc(100vh - 280px)); min-height: 280px; }
+    }
+    /* На невысоких экранах ужимаем шапку, чтобы форма осталась в зоне видимости */
+    @media (max-height: 720px) {
+      .modal__head { padding: 14px 18px 12px; }
+      .modal__badge { margin-bottom: 8px; padding: 5px 12px; font-size: 12.5px; }
+      .modal__title { font-size: 19px; margin-bottom: 6px; }
+      .modal__subtitle { font-size: 13.5px; }
     }
 
     .modal__close {
       position: absolute;
       top: 12px;
       right: 12px;
-      width: 40px;
-      height: 40px;
+      z-index: 4;
+      width: 38px;
+      height: 38px;
       display: grid;
       place-items: center;
       font-size: 24px;
       line-height: 1;
       color: var(--ink-soft);
-      background: var(--bg);
+      background: var(--white);
       border: 1px solid var(--border);
-      border-radius: 50%;
+      border-radius: 12px;
+      box-shadow: 0 8px 16px -10px rgba(33, 37, 41, .55);
       cursor: pointer;
-      transition: color .2s ease, background .2s ease, transform .2s ease;
+      transition: color .2s ease, background .2s ease, border-color .2s ease, transform .2s ease;
     }
-    .modal__close:hover {
+    .modal__close:hover,
+    .modal__close:focus-visible {
       color: var(--white);
-      background: #e03131;
-      border-color: #e03131;
+      background: var(--accent);
+      border-color: var(--accent);
       transform: rotate(90deg);
     }
-
-    .modal__title {
-      font-size: clamp(19px, 4.5vw, 23px);
-      font-weight: 800;
-      line-height: 1.3;
-      letter-spacing: -.01em;
-      margin-bottom: 8px;
-      padding-right: 36px;
-    }
-    .modal__subtitle {
-      font-size: 14.5px;
-      color: var(--ink-soft);
-      line-height: 1.55;
-      margin-bottom: 20px;
-    }
-
-    .modal-form { display: grid; gap: 13px; }
-
-    .modal-agree {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      font-size: 13px;
-      line-height: 1.5;
-      color: var(--ink-soft);
-      cursor: pointer;
-      user-select: none;
-      padding: 4px 0;
-    }
-    .modal-agree input[type="checkbox"] {
-      flex: 0 0 auto;
-      width: 20px;
-      height: 20px;
-      margin: 1px 0 0;
-      accent-color: var(--accent);
-      cursor: pointer;
-    }
-    .modal-agree a {
-      color: var(--accent-dark);
-      text-decoration: underline;
-      text-decoration-color: rgba(0, 150, 184, .4);
-      text-underline-offset: 2px;
-    }
-    .modal-agree a:hover { color: var(--accent); text-decoration-color: rgba(0, 180, 216, .5); }
-
-    .modal-success {
-      display: none;
-      text-align: center;
-      padding: 18px 4px 6px;
-      animation: fadeIn .35s ease;
-    }
-    .modal-success.is-visible { display: block; }
 
     .offer__cta { max-width: 560px; margin: 0 auto; }
     .offer__cta .btn { min-height: 62px; font-size: 17px; }
@@ -1597,6 +1695,55 @@
     .stat-cell__label { font-size: 13px; color: var(--ink-soft); }
 
     /* ============ АДАПТИВ ============ */
+    /* Мобильное меню: навигация превращается в выпадающую панель под шапкой.
+       visibility: hidden убирает ссылки из порядка табуляции в закрытом виде.
+       Порог 1080px, а не 900px: при 900–1080 раскрытая навигация + кнопка
+       заявки сжимают подпись логотипа в узкий столбец. */
+    @media (max-width: 1079px) {
+      .burger { display: grid; }
+
+      .nav {
+        position: fixed;
+        top: 65px;
+        left: 14px;
+        right: 14px;
+        z-index: 60;
+        padding: 10px;
+        background: rgba(255, 255, 255, .96);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        box-shadow: var(--shadow);
+        transform: translateY(-12px);
+        opacity: 0;
+        visibility: hidden;
+        transition: transform .25s ease, opacity .25s ease, visibility .25s ease;
+      }
+      .nav.is-open {
+        transform: translateY(0);
+        opacity: 1;
+        visibility: visible;
+      }
+      .nav__list {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+      .nav__link {
+        display: block;
+        padding: 12px;
+        font-size: 16px;
+        border-radius: var(--radius-sm);
+      }
+      .nav__link:hover,
+      .nav__link:focus-visible {
+        background: var(--bg);
+        color: var(--accent-dark);
+      }
+      .nav__cta { display: block; }
+    }
+
     @media (min-width: 600px) {
       .container { padding: 0 24px; }
       .cards-3 { grid-template-columns: repeat(2, 1fr); }
@@ -1635,8 +1782,6 @@
 
     @media (min-width: 900px) {
       .section { padding: 80px 0; }
-      .nav__list { display: flex; }
-      .header-cta { display: inline-flex; }
 
       .hero { padding: 64px 0 80px; }
       .hero__grid { grid-template-columns: 1.05fr .95fr; gap: 48px; }
@@ -1655,6 +1800,19 @@
       .logo__tagline { max-width: 170px; font-size: 10px; }
       .hero__stat { flex: 1 1 100%; }
     }
+
+    /* ============ ШИРОКАЯ ШАПКА: РАСКРЫТОЕ МЕНЮ ============ */
+    @media (min-width: 1080px) {
+      .nav__list { display: flex; }
+      .header-cta { display: inline-flex; }
+      /* Подпись логотипа уступает место навигации — иначе она
+         переносится в узкий столбец на 1080–1200px */
+      .site-header .logo__tagline { display: none; }
+    }
+
+    @media (min-width: 1200px) {
+      .site-header .logo__tagline { display: block; }
+    }
   </style>
 </head>
 
@@ -1671,21 +1829,27 @@
         <span class="logo__mark">Г</span>
         <span class="logo__text">
           <span class="logo__name">Гекса</span>
-          <span class="logo__tagline">Онлайн-школа в мини-группах до 6 человек для учеников 1–11 классов</span>
+          <span class="logo__tagline">Онлайн-школа в мини-группах до&nbsp;6&nbsp;человек для учеников 1–11&nbsp;классов</span>
         </span>
       </a>
 
-      <nav class="nav" aria-label="Основная навигация">
+      <nav class="nav" id="siteNav" aria-label="Основная навигация">
         <ul class="nav__list">
           <li><a class="nav__link" href="#problems-and-solutions">Проблемы</a></li>
           <li><a class="nav__link" href="#how-it-works">Формат</a></li>
           <li><a class="nav__link" href="#teachers">Преподаватели</a></li>
           <li><a class="nav__link" href="#reviews">Отзывы</a></li>
           <li><a class="nav__link" href="#final-offer">Цена</a></li>
+          <li><a class="nav__link nav__cta" href="#quiz" data-open-modal>Забронировать место</a></li>
         </ul>
       </nav>
 
-      <a class="btn header-cta" href="#quiz" data-open-modal>Забронировать место</a>
+      <div class="header-actions">
+        <a class="btn header-cta" href="#quiz" data-open-modal>Забронировать место</a>
+        <button class="burger" id="burger" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="siteNav">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
     </div>
   </header>
 
@@ -1696,19 +1860,19 @@
       <div class="container hero__grid">
 
         <div class="hero__content">
-          <span class="hero__badge"><span class="hero__badge-dot"></span> Набор в группы идёт · осталось 4 места</span>
+          <span class="hero__badge"><span class="hero__badge-dot"></span> Набор в группы идёт · осталось&nbsp;4&nbsp;места</span>
 
           <h1 class="hero__title" id="hero-title">
-            Подтянем оценки в школе за&nbsp;<span class="accent-strong">2 месяца</span> занятий по&nbsp;<span class="accent-strong">30 минут</span> в день
+            Подтянем оценки в школе за&nbsp;<span class="accent-strong">2&nbsp;месяца</span> занятий по&nbsp;<span class="accent-strong">30&nbsp;минут</span> в день
           </h1>
 
           <h2 class="hero__subtitle">
-            Ребёнок занимается онлайн в <strong>группах до 6 человек</strong> с преподавателями из топ-20 вузов России.
-            Если за <strong>8 занятий</strong> успеваемость не вырастет — вернём деньги.
+            Ребёнок занимается онлайн в <strong>группах до&nbsp;6&nbsp;человек</strong> с преподавателями из топ-20&nbsp;вузов России.
+            Если за <strong>8&nbsp;занятий</strong> успеваемость не вырастет — вернём деньги.
           </h2>
 
           <div class="hero__cta">
-            <a class="btn" href="#quiz">Пройти тест-драйв школы и зафиксировать скидку 30%</a>
+            <a class="btn" href="#quiz">Пройти тест-драйв школы и зафиксировать скидку&nbsp;30%</a>
           </div>
 
           <ul class="trust-badges">
@@ -1724,11 +1888,11 @@
 
           <ul class="hero__stats">
             <li class="hero__stat">
-              <div class="hero__stat-value">до 6</div>
+              <div class="hero__stat-value">до&nbsp;6</div>
               <div class="hero__stat-label">человек в группе</div>
             </li>
             <li class="hero__stat">
-              <div class="hero__stat-value">30 мин</div>
+              <div class="hero__stat-value">30&nbsp;мин</div>
               <div class="hero__stat-label">один урок каждый день</div>
             </li>
             <li class="hero__stat">
@@ -1743,11 +1907,11 @@
           <div class="platform-card">
             <span class="float-note">
               <span class="float-note__cap">🎓</span>
-              <span>Преподаватель: МГУ · 7 лет опыта</span>
+              <span>Преподаватель: МГУ · 7&nbsp;лет опыта</span>
             </span>
 
             <div class="platform-card__top">
-              <span class="platform-card__room">Мини-группа «Алгебра, 7 класс»</span>
+              <span class="platform-card__room">Мини-группа «Алгебра, 7&nbsp;класс»</span>
               <span class="platform-card__live">урок идёт</span>
             </div>
 
@@ -1772,7 +1936,7 @@
               <span class="avatar avatar--a">АР</span>
               <span class="avatar avatar--e">ЕВ</span>
               <span class="avatar avatar--p">ПК</span>
-              <span class="group-row__count">6 из 6 мест</span>
+              <span class="group-row__count">6&nbsp;из&nbsp;6&nbsp;мест</span>
             </div>
 
             <div class="chart">
@@ -1784,14 +1948,14 @@
               <span class="chart__bar" style="height:82%; animation-delay:.55s"></span>
               <span class="chart__bar chart__bar--last" style="height:96%; animation-delay:.65s"></span>
             </div>
-            <p class="chart__caption">Прогресс успеваемости за 7 недель: <strong>+42%</strong></p>
+            <p class="chart__caption">Прогресс успеваемости за&nbsp;7&nbsp;недель: <strong>+42%</strong></p>
 
             <div class="platform-card__footer">
               <span class="platform-pill">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 3l2.2 2.2L16.6 3l2.4 1.4L18.4 7l1.6 1.6-1.6 1.6 1.6 1.6-1.6 1.6.6 2.6-2.6.6-1.6 1.6-1.6-1.6-2.2 2.2-2.2-2.2L8 17l-1.6-1.6L8 13.8 6.4 12.2 8 10.6 7.4 8 10 7.4l1.6-1.6L13.2 7l2.2-2.2L12 3z"/></svg>
                 Запись урока в кабинете
               </span>
-              <span class="platform-pill platform-pill--coins">🪙 120 коинов заработано</span>
+              <span class="platform-pill platform-pill--coins">🪙 120&nbsp;коинов заработано</span>
             </div>
           </div>
         </div>
@@ -1827,7 +1991,7 @@
               </li>
               <li class="item item--pain">
                 <span class="item__mark">✕</span>
-                <span>Скоро экзамены, а на найм репетиторов по 3 предметам уходит половина семейного бюджета.
+                <span>Скоро экзамены, а на найм репетиторов по&nbsp;3&nbsp;предметам уходит половина семейного бюджета.
                   Вы переживаете, что без дорогой подготовки ребёнок не наберёт баллы для поступления
                   на бюджет и упустит время.</span>
               </li>
@@ -1838,7 +2002,7 @@
           <div class="panel panel--fix">
             <div class="panel__head">
               <span class="panel__icon">✅</span>
-              <h2 class="panel__title">Как онлайн-школа «Гекса» решает эти проблемы за 8 недель</h2>
+              <h2 class="panel__title">Как онлайн-школа «Гекса» решает эти проблемы за&nbsp;8&nbsp;недель</h2>
             </div>
 
             <ul class="item-list">
@@ -1852,18 +2016,18 @@
               </li>
               <li class="fix-card">
                 <p class="fix-card__do"><span class="item__mark" style="background:var(--success-soft);color:var(--success)">✓</span>
-                  Мы обучаем в мини-группах до 6 человек, где преподаватель разбирает ошибки каждого ученика
+                  Мы обучаем в мини-группах до&nbsp;6&nbsp;человек, где преподаватель разбирает ошибки каждого ученика
                 </p>
                 <p class="fix-card__arrow">→ ваш результат</p>
                 <p class="fix-card__result">Ребёнок закрывает пробелы в знаниях, обретает уверенность и повышает
-                  балл в школе <strong>минимум на 1,5 пункта</strong>.</p>
+                  балл в школе <strong>минимум на&nbsp;1,5&nbsp;пункта</strong>.</p>
               </li>
               <li class="fix-card">
                 <p class="fix-card__do"><span class="item__mark" style="background:var(--success-soft);color:var(--success)">✓</span>
                   Мы предлагаем комплексную подготовку по единой фиксированной цене
                 </p>
                 <p class="fix-card__arrow">→ ваш результат</p>
-                <p class="fix-card__result">Вы экономите <strong>до 40 000 ₽ в месяц</strong> по сравнению с обычными
+                <p class="fix-card__result">Вы экономите <strong>до&nbsp;40&nbsp;000&nbsp;₽ в месяц</strong> по сравнению с обычными
                   репетиторами и получаете гарантию поступления на бюджет по договору.</p>
               </li>
             </ul>
@@ -1876,7 +2040,7 @@
     <!-- ============ БЛОК 3: ИНТЕРАКТИВНЫЙ ФОРМАТ ============ -->
     <section class="section section--white" id="how-it-works" aria-labelledby="format-title">
       <div class="container">
-        <h2 class="section-title" id="format-title"><span class="accent-strong">30 минут</span> увлечённой работы вместо <span class="accent-strong">2 часов зубрёжки</span></h2>
+        <h2 class="section-title" id="format-title"><span class="accent-strong">30&nbsp;минут</span> увлечённой работы вместо <span class="accent-strong">2&nbsp;часов зубрёжки</span></h2>
         <p class="section-subtitle">Формат «Гексы» устроен так, чтобы ребёнок хотел возвращаться на уроки,
           а не уклонялся от них.</p>
 
@@ -1895,8 +2059,8 @@
             <span class="feature-card__num">02</span>
             <div class="feature-card__icon">👥</div>
             <span class="feature-card__label">Динамика группы</span>
-            <h3 class="feature-card__title">Внимание каждому из 6</h3>
-            <p class="feature-card__text">В группе всего до 6 человек. Преподаватель не читает лекцию, а вовлекает
+            <h3 class="feature-card__title">Внимание каждому из&nbsp;6</h3>
+            <p class="feature-card__text">В группе всего до&nbsp;6&nbsp;человек. Преподаватель не читает лекцию, а вовлекает
               каждого: дети работают на общей онлайн-доске, соревнуются в мини-викторинах и разбирают сложные
               кейсы в командах.</p>
           </article>
@@ -1916,7 +2080,7 @@
     <!-- ============ ПРЕПОДАВАТЕЛИ ============ -->
     <section class="section section--dark" id="teachers" aria-labelledby="teachers-title">
       <div class="container">
-        <h2 class="section-title" id="teachers-title">С ребёнком занимаются преподаватели из <span class="accent-strong">топ-20 вузов России</span></h2>
+        <h2 class="section-title" id="teachers-title">С ребёнком занимаются преподаватели из <span class="accent-strong">топ-20&nbsp;вузов России</span></h2>
         <p class="section-subtitle">Все педагоги «Гексы» проходят трёхэтапный отбор и ежегодно повышают квалификацию.
           Познакомьтесь с теми, кто ведёт мини-группы.</p>
 
@@ -1925,15 +2089,15 @@
             <div class="teacher-card__photo"><img src="teacher_woman.jpeg" alt="Мария Соколова — преподаватель математики"></div>
             <h3 class="teacher-card__name">Мария Соколова</h3>
             <p class="teacher-card__university">МГУ им. М. В. Ломоносова</p>
-            <span class="teacher-card__subject">Математика · 7 лет опыта</span>
-            <p class="teacher-card__desc">Учитель высшей категории. Подготовила 40+ призёров олимпиад и ведёт в «Гексе» группы 5–9 классов.</p>
+            <span class="teacher-card__subject">Математика · 7&nbsp;лет опыта</span>
+            <p class="teacher-card__desc">Учитель высшей категории. Подготовила 40+&nbsp;призёров олимпиад и ведёт в «Гексе» группы 5–9&nbsp;классов.</p>
           </article>
 
           <article class="teacher-card reveal">
             <div class="teacher-card__photo"><img src="teacher_man-2.jpg" alt="Дмитрий Абрамов — преподаватель физики"></div>
             <h3 class="teacher-card__name">Дмитрий Абрамов</h3>
             <p class="teacher-card__university">МФТИ</p>
-            <span class="teacher-card__subject">Физика и информатика · 9 лет опыта</span>
+            <span class="teacher-card__subject">Физика и информатика · 9&nbsp;лет опыта</span>
             <p class="teacher-card__desc">Выпускник Физтеха. Разбирает задачи так, что дети сами просят «ещё одну». Ведёт подготовку к ОГЭ и ЕГЭ.</p>
           </article>
 
@@ -1941,7 +2105,7 @@
             <div class="teacher-card__photo"><img src="teacher_english_woman.jpg" alt="Алина Ковалёва — преподаватель английского языка"></div>
             <h3 class="teacher-card__name">Алина Ковалёва</h3>
             <p class="teacher-card__university">НИУ ВШЭ</p>
-            <span class="teacher-card__subject">Английский язык · 6 лет опыта</span>
+            <span class="teacher-card__subject">Английский язык · 6&nbsp;лет опыта</span>
             <p class="teacher-card__desc">Уровень C2, IELTS 8.5. Готовит к ОГЭ, ЕГЭ и кембриджским экзаменам, говорит с детьми только на английском.</p>
           </article>
 
@@ -1949,7 +2113,7 @@
             <div class="teacher-card__photo"><img src="teacher_man.webp" alt="Виктор Смирнов — преподаватель русского языка"></div>
             <h3 class="teacher-card__name">Виктор Смирнов</h3>
             <p class="teacher-card__university">СПбГУ</p>
-            <span class="teacher-card__subject">Русский язык и литература · 8 лет опыта</span>
+            <span class="teacher-card__subject">Русский язык и литература · 8&nbsp;лет опыта</span>
             <p class="teacher-card__desc">Специалист по «сложным» подросткам. Помогает полюбить чтение и вытаскивает грамотность без зубрёжки правил.</p>
           </article>
         </div>
@@ -1968,7 +2132,7 @@
               <span class="review-card__avatar" style="background:linear-gradient(135deg,#faa2c1,#e64980)">ОК</span>
               <div class="review-card__who">
                 <p class="review-card__name">Ольга Казакова</p>
-                <p class="review-card__meta">Мама Никиты, 7 класс</p>
+                <p class="review-card__meta">Мама Никиты, 7&nbsp;класс</p>
               </div>
               <span class="review-card__stars">★★★★★</span>
             </div>
@@ -1986,12 +2150,12 @@
               <span class="review-card__avatar" style="background:linear-gradient(135deg,#74c0fc,#339af0)">ИВ</span>
               <div class="review-card__who">
                 <p class="review-card__name">Игорь Ветров</p>
-                <p class="review-card__meta">Папа Алисы, 9 класс</p>
+                <p class="review-card__meta">Папа Алисы, 9&nbsp;класс</p>
               </div>
               <span class="review-card__stars">★★★★★</span>
             </div>
-            <p class="review-card__text">Готовились к ОГЭ по физике в группе с 1 февраля. Ребёнок боялся экзамена, а в итоге
-              получил 34 балла из 40. Отдельное спасибо за записи уроков — наверстывали после болезни без проблем.</p>
+            <p class="review-card__text">Готовились к ОГЭ по физике в группе с&nbsp;1&nbsp;февраля. Ребёнок боялся экзамена, а в итоге
+              получил 34&nbsp;балла из&nbsp;40. Отдельное спасибо за записи уроков — наверстывали после болезни без проблем.</p>
             <div class="review-card__progress">
               <span class="grade-pill grade-pill--from">Пробник: 14</span>
               <span class="review-card__arrow">→</span>
@@ -2004,11 +2168,11 @@
               <span class="review-card__avatar" style="background:linear-gradient(135deg,#69db7c,#2f9e44)">НЛ</span>
               <div class="review-card__who">
                 <p class="review-card__name">Наталия Литвинова</p>
-                <p class="review-card__meta">Мама Егора, 11 класс</p>
+                <p class="review-card__meta">Мама Егора, 11&nbsp;класс</p>
               </div>
               <span class="review-card__stars">★★★★★</span>
             </div>
-            <p class="review-card__text">Экономия по сравнению с репетиторами — больше 30 тысяч в месяц, а результат лучше.
+            <p class="review-card__text">Экономия по сравнению с репетиторами — больше 30&nbsp;тысяч в месяц, а результат лучше.
               Егор уверенно идёт на бюджет в технический вуз. Спасибо «Гексе» за честную цену и гарантию по договору.</p>
             <div class="review-card__progress">
               <span class="grade-pill grade-pill--from">Тройки по алгебре</span>
@@ -2020,7 +2184,7 @@
 
         <div class="stats-strip">
           <div class="stat-cell reveal">
-            <div class="stat-cell__value">6 500+</div>
+            <div class="stat-cell__value">6&nbsp;500+</div>
             <div class="stat-cell__label">учеников прошли обучение</div>
           </div>
           <div class="stat-cell reveal">
@@ -2049,17 +2213,17 @@
           <details class="faq-item">
             <summary class="faq-item__q">Как проходит тест-драйв школы?</summary>
             <div class="faq-item__a">
-              <p>Пройдите короткий тест из 4 вопросов — по ответам мы поймём класс и исходный уровень ребёнка.
+              <p>Пройдите короткий тест из&nbsp;4&nbsp;вопросов — по ответам мы поймём класс и исходный уровень ребёнка.
                 После теста откроется форма заявки: на указанную почту придут результаты анализа и гайд
-                «Как подтянуть оценки за 8 недель», а методист в течение 15 минут свяжется с вами и зафиксирует
-                скидку 30% на тест-драйв. Карта на этом этапе не нужна.</p>
+                «Как подтянуть оценки за&nbsp;8&nbsp;недель», а методист в течение 15&nbsp;минут свяжется с вами и зафиксирует
+                скидку&nbsp;30% на тест-драйв. Карта на этом этапе не нужна.</p>
             </div>
           </details>
 
           <details class="faq-item">
-            <summary class="faq-item__q">Почему группы до 6 человек?</summary>
+            <summary class="faq-item__q">Почему группы до&nbsp;6&nbsp;человек?</summary>
             <div class="faq-item__a">
-              <p>Группы формируются по классу и предмету, в каждой — не больше 6 учеников. Такое количество
+              <p>Группы формируются по классу и предмету, в каждой — не больше 6&nbsp;учеников. Такое количество
                 позволяет преподавателю вовлечь каждого: общая онлайн-доска, мини-викторины, разбор сложных
                 заданий в командах. Ребёнок получает внимание почти как на индивидуальных занятиях, но с драйвом
                 от соревнования и ценой заметно ниже репетитора.</p>
@@ -2069,8 +2233,8 @@
           <details class="faq-item">
             <summary class="faq-item__q">Кто будет заниматься с моим ребёнком?</summary>
             <div class="faq-item__a">
-              <p>Занятия ведут преподаватели из топ-20 вузов России — МГУ, МФТИ, НИУ ВШЭ и СПбГУ — с опытом
-                от 5 лет. На тест-драйве ребёнок позанимается с тем преподавателем, который ведёт группу
+              <p>Занятия ведут преподаватели из топ-20&nbsp;вузов России — МГУ, МФТИ, НИУ ВШЭ и СПбГУ — с опытом
+                от&nbsp;5&nbsp;лет. На тест-драйве ребёнок позанимается с тем преподавателем, который ведёт группу
                 по нужному предмету и классу.</p>
             </div>
           </details>
@@ -2078,7 +2242,7 @@
           <details class="faq-item">
             <summary class="faq-item__q">Что гарантирует школа?</summary>
             <div class="faq-item__a">
-              <p>Гарантия закреплена в договоре: если за первые 8 занятий успеваемость не вырастет, мы вернём
+              <p>Гарантия закреплена в договоре: если за первые 8&nbsp;занятий успеваемость не вырастет, мы вернём
                 деньги. Все условия фиксируются письменно до начала занятий — никаких устных обещаний.</p>
             </div>
           </details>
@@ -2087,14 +2251,14 @@
             <summary class="faq-item__q">Можно ли вернуть деньги, если формат не подошёл?</summary>
             <div class="faq-item__a">
               <p>Да. Если после первого оплаченного урока вы решите, что мини-группы — не ваш формат, мы вернём
-                на карту все 8 995 рублей в течение 15 минут: без заявлений, объяснений и дополнительных условий.</p>
+                на карту все 8&nbsp;995&nbsp;рублей в течение 15&nbsp;минут: без заявлений, объяснений и дополнительных условий.</p>
             </div>
           </details>
 
           <details class="faq-item">
             <summary class="faq-item__q">Сколько стоят занятия и что входит в цену?</summary>
             <div class="faq-item__a">
-              <p>По акции занятия в мини-группе стоят 8 995 руб./мес вместо базовых 12 850 руб. В стоимость входят
+              <p>По акции занятия в мини-группе стоят&nbsp;8&nbsp;995&nbsp;руб./мес вместо базовых 12&nbsp;850&nbsp;руб. В стоимость входят
                 живые уроки на интерактивной платформе «Гекса», все материалы для занятий, записи каждого урока
                 и поддержка куратора.</p>
             </div>
@@ -2103,7 +2267,7 @@
           <details class="faq-item">
             <summary class="faq-item__q">Сколько времени нужно уделять занятиям?</summary>
             <div class="faq-item__a">
-              <p>Ребёнку хватает 30 минут в день: формат построен так, чтобы поднять успеваемость за 2 месяца
+              <p>Ребёнку хватает 30&nbsp;минут в день: формат построен так, чтобы поднять успеваемость за&nbsp;2&nbsp;месяца
                 без зубрёжки. Если занятие пропущено по болезни, запись урока сохраняется в личном кабинете —
                 наверстать можно в удобное время, а вопросы задать куратору в чате.</p>
             </div>
@@ -2112,7 +2276,7 @@
           <details class="faq-item">
             <summary class="faq-item__q">Для каких классов занятия и что нужно для них?</summary>
             <div class="faq-item__a">
-              <p>Онлайн-школа «Гекса» принимает учеников с 1-го по 11-й класс. Основные направления — математика,
+              <p>Онлайн-школа «Гекса» принимает учеников с&nbsp;1-го по&nbsp;11-й класс. Основные направления — математика,
                 физика, русский и английский язык. От вас нужны только компьютер или планшет с доступом в интернет:
                 платформа и все материалы уже входят в стоимость.</p>
             </div>
@@ -2125,15 +2289,15 @@
     <section class="section" id="quiz" aria-labelledby="quiz-title">
       <div class="container">
         <h2 class="section-title" id="quiz-title">Узнайте, какой тип мышления у вашего ребёнка и как повысить
-          его успеваемость без зубрёжки за 2 месяца</h2>
-        <p class="section-subtitle">Ответьте на 4 простых вопроса, чтобы получить персональную стратегию обучения
-          и забронировать скидку 30%.</p>
+          его успеваемость без зубрёжки за&nbsp;2&nbsp;месяца</h2>
+        <p class="section-subtitle">Ответьте на&nbsp;4&nbsp;простых вопроса, чтобы получить персональную стратегию обучения
+          и забронировать скидку&nbsp;30%.</p>
 
         <div class="quiz-wrap reveal">
 
           <!-- Прогресс -->
           <div class="quiz__meta">
-            <span class="quiz__meta-step" id="quizStepLabel">Вопрос 1 из 4</span>
+            <span class="quiz__meta-step" id="quizStepLabel">Вопрос 1&nbsp;из&nbsp;4</span>
             <span id="quizPercent">20%</span>
           </div>
           <div class="quiz__bar" role="progressbar" aria-label="Прогресс теста" aria-valuemin="0" aria-valuemax="100" aria-valuenow="20">
@@ -2146,10 +2310,10 @@
             <div class="quiz-step is-active" data-step="0">
               <h3 class="quiz-step__title">В каком классе учится ваш ребёнок?</h3>
               <div class="quiz-options">
-                <button type="button" class="quiz-option" data-value="1–4 класс">1–4 класс</button>
-                <button type="button" class="quiz-option" data-value="5–8 класс">5–8 класс</button>
-                <button type="button" class="quiz-option" data-value="9 класс">9 класс</button>
-                <button type="button" class="quiz-option" data-value="10–11 класс">10–11 класс</button>
+                <button type="button" class="quiz-option" data-value="1–4 класс">1–4&nbsp;класс</button>
+                <button type="button" class="quiz-option" data-value="5–8 класс">5–8&nbsp;класс</button>
+                <button type="button" class="quiz-option" data-value="9 класс">9&nbsp;класс</button>
+                <button type="button" class="quiz-option" data-value="10–11 класс">10–11&nbsp;класс</button>
               </div>
             </div>
 
@@ -2194,14 +2358,14 @@
               <div class="lead-form">
                 <button type="submit" class="btn">Получить результаты теста и забронировать место</button>
                 <p class="form-note">Пришлём результаты анализа и гайд на указанную почту
-                  и закрепим скидку 30% за вами.</p>
+                  и закрепим скидку&nbsp;30% за вами.</p>
               </div>
 
               <div class="form-success" id="formSuccess" role="status">
                 <div class="form-success__icon">🎉</div>
                 <p class="form-success__title">Заявка принята!</p>
-                <p class="form-success__text" id="quizFormSuccessText">Гайд «Как подтянуть оценки за 8 недель» и результаты теста уже отправлены
-                  на вашу почту. Скидка 30% закреплена за вами — заполните короткую форму заявки, и методист
+                <p class="form-success__text" id="quizFormSuccessText">Гайд «Как подтянуть оценки за&nbsp;8&nbsp;недель» и результаты теста уже отправлены
+                  на вашу почту. Скидка&nbsp;30% закреплена за вами — заполните короткую форму заявки, и методист
                   свяжется с вами, чтобы подобрать группу.</p>
                 <a class="btn form-success__btn" href="#quiz" data-open-modal>Заполнить форму заявки</a>
               </div>
@@ -2230,11 +2394,11 @@
              aria-label="Открыть форму заявки и забронировать цену 8 995 рублей в месяц">
           <span class="price-card__badge">−30%</span>
           <span class="price-card__plan">Помесячная оплата</span>
-          <span class="price-card__old">12 850 руб. / мес.</span>
-          <span class="price-card__new">8 995 <span>руб. / мес.</span></span>
-          <span class="price-card__save">Ваша экономия — 3 855 рублей каждый месяц</span>
-          <span class="price-card__alt">Или годовой курс за <strong>71 900 руб.</strong> вместо 102 800 руб.</span>
-          <span class="btn price-card__btn">Забрать за 8995 руб./мес.</span>
+          <span class="price-card__old">12&nbsp;850&nbsp;руб. / мес.</span>
+          <span class="price-card__new">8&nbsp;995 <span>руб. / мес.</span></span>
+          <span class="price-card__save">Ваша экономия — 3&nbsp;855&nbsp;рублей каждый месяц</span>
+          <span class="price-card__alt">Или годовой курс за <strong>71&nbsp;900&nbsp;руб.</strong> вместо&nbsp;102&nbsp;800&nbsp;руб.</span>
+          <span class="btn price-card__btn">Забрать за&nbsp;8995&nbsp;руб./мес.</span>
         </div>
 
         <div class="offer__countdown" aria-hidden="true">
@@ -2247,22 +2411,22 @@
         <div class="offer__grid reveal">
           <div class="offer-box offer-box--urgent">
             <p class="offer-box__head"><span class="offer-box__emoji">⏰</span> Ограниченное место в наборе</p>
-            <p class="offer-box__text">До завершения набора в группы по стоимости <strong>8 995 руб./мес.</strong>
-              осталось <strong>4 места</strong>. С завтрашнего дня скидка 30% сгорает, и цена вернётся
-              к базовым <strong>12 850 руб.</strong> из-за укомплектованности потока.</p>
+            <p class="offer-box__text">До завершения набора в группы по стоимости <strong>8&nbsp;995&nbsp;руб./мес.</strong>
+              осталось <strong>4&nbsp;места</strong>. С завтрашнего дня скидка&nbsp;30% сгорает, и цена вернётся
+              к базовым <strong>12&nbsp;850&nbsp;руб.</strong> из-за укомплектованности потока.</p>
           </div>
 
           <div class="offer-box offer-box--safe">
             <p class="offer-box__head"><span class="offer-box__emoji">🛡️</span> Снятие риска</p>
             <p class="offer-box__text"><strong>Безопасный тест-драйв:</strong> если после первого оплаченного урока
-              вы решите, что формат мини-групп вам не подходит, мы переведём обратно все <strong>8 995 рублей</strong>
-              на вашу карту <strong>в течение 15 минут</strong> без заявлений и объяснений.</p>
+              вы решите, что формат мини-групп вам не подходит, мы переведём обратно все <strong>8&nbsp;995&nbsp;рублей</strong>
+              на вашу карту <strong>в течение 15&nbsp;минут</strong> без заявлений и объяснений.</p>
           </div>
         </div>
 
         <div class="offer__cta">
-          <a class="btn" href="#quiz">Пройти тест-драйв и зафиксировать цену со скидкой 30%</a>
-          <p class="offer__micro">Осталось 4 из 24 мест в потоке · Карта для оплаты не требуется</p>
+          <a class="btn" href="#quiz">Пройти тест-драйв и зафиксировать цену со скидкой&nbsp;30%</a>
+          <p class="offer__micro">Осталось&nbsp;4&nbsp;из&nbsp;24&nbsp;мест в потоке · Карта для оплаты не требуется</p>
         </div>
       </div>
     </section>
@@ -2278,14 +2442,14 @@
             <span class="logo__mark">Г</span>
             <span class="logo__text"><span class="logo__name">Гекса</span></span>
           </a>
-          <p class="footer__text">Онлайн-школа в мини-группах до 6 человек для учеников 1–11 классов.
-            Занятия на интерактивной платформе с преподавателями из топ-20 вузов России.
-            Гарантия результата за 8 занятий или возврат денег по договору.</p>
+          <p class="footer__text">Онлайн-школа в мини-группах до&nbsp;6&nbsp;человек для учеников 1–11&nbsp;классов.
+            Занятия на интерактивной платформе с преподавателями из топ-20&nbsp;вузов России.
+            Гарантия результата за&nbsp;8&nbsp;занятий или возврат денег по договору.</p>
           <a class="footer__link" href="privacy.html" aria-label="Политика обработки персональных данных">Политика обработки персональных данных</a>
         </div>
 
         <div class="footer__contacts">
-          <a href="tel:+78000000000">8 800 000-00-00</a>
+          <a href="tel:+78000000000">8&nbsp;800&nbsp;000-00-00</a>
           <a href="mailto:hello@hexa.school">hello@hexa.school</a>
           <span style="color:var(--ink-soft); font-size:13.5px;">Пн–Пт, 9:00–21:00 (МСК)</span>
 
@@ -2303,7 +2467,7 @@
       </div>
 
       <div class="footer__bottom">
-        <span>© 2026 ООО «Гекса Эдьюкейшн». Все права защищены.</span>
+        <span>© 2026&nbsp;ООО «Гекса Эдьюкейшн». Все права защищены.</span>
         <span>Не является публичной офертой. Результаты обучения индивидуальны.</span>
       </div>
 
@@ -2318,16 +2482,31 @@
     <button class="modal__overlay" type="button" data-close-modal aria-label="Закрыть форму"></button>
 
     <div class="modal__dialog modal__dialog--yform">
-      <button class="modal__close" type="button" data-close-modal aria-label="Закрыть форму">&times;</button>
+      <div class="modal__head">
+        <button class="modal__close" type="button" data-close-modal aria-label="Закрыть форму">&times;</button>
+        <span class="modal__badge">Бронируем месяц за&nbsp;8&nbsp;995&nbsp;₽</span>
+        <h2 class="modal__title">Оставьте контакты — <strong>методист перезвонит за&nbsp;15&nbsp;минут</strong></h2>
+        <p class="modal__subtitle">Подберём группу по уровню ребёнка и зафиксируем скидку&nbsp;30% за вами.</p>
+      </div>
 
-      <div class="yform-frame" id="yformFrame">
-        <div class="yform-frame__loader" aria-hidden="true">
-          <span class="yform-frame__spinner"></span>
+      <div class="modal__body">
+        <div class="yform-frame" id="yformFrame">
+          <div class="yform-frame__loader" aria-hidden="true">
+            <span class="yform-frame__spinner"></span>
+          </div>
+          <!-- src намеренно НЕ задан: загружаем форму из JS при первом открытии,
+               чтобы обработчик load гарантированно повесился раньше загрузки -->
+          <iframe data-src="https://forms.yandex.ru/u/6abe0d58eb614628e9b06645/?iframe=1"
+            title="Форма заявки онлайн-школы «Гекса»"
+            allow="clipboard-write"
+            referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
-        <iframe src="https://forms.yandex.ru/u/6abe0d58eb614628e9b06645/?iframe=1"
-          title="Форма заявки онлайн-школы «Гекса»"
-          loading="lazy"
-          allowfullscreen></iframe>
+
+        <p class="modal__note">Отправляя форму, вы соглашаетесь с <a href="privacy.html" target="_blank" rel="noopener">Политикой обработки персональных данных</a>.</p>
+
+        <p class="modal__fallback" id="yformFallback" hidden>
+          Форма не загрузилась — <a href="https://forms.yandex.ru/u/6abe0d58eb614628e9b06645/?iframe=1" target="_blank" rel="noopener">откройте её в новой вкладке</a>.
+        </p>
       </div>
     </div>
   </div>
@@ -2365,7 +2544,8 @@
         bar.setAttribute('aria-valuenow', String(percent));
 
         if (current < TOTAL_QUESTIONS) {
-          stepLabel.textContent = 'Вопрос ' + (current + 1) + ' из ' + TOTAL_QUESTIONS;
+          // \u00A0 — неразрывные пробелы, чтобы «1 из 4» не разрывалось по строкам
+        stepLabel.textContent = 'Вопрос\u00A0' + (current + 1) + '\u00A0из\u00A0' + TOTAL_QUESTIONS;
           hint.textContent = 'Выберите один из вариантов ответа';
           hint.style.display = '';
         } else {
@@ -2436,13 +2616,49 @@
       /* ============ МОДАЛЬНОЕ ОКНО (Яндекс Форма) ============ */
       var modal = document.getElementById('leadModal');
       var yformFrame = document.getElementById('yformFrame');
+      var yformFallback = document.getElementById('yformFallback');
       var lastFocused = null;
+      var yformStarted = false;
+
+      // Загружаем Яндекс Форму один раз — при первом открытии модалки.
+      // Обработчики вешаем ДО установки src, иначе при быстрой загрузке
+      // из кэша событие load пролетит мимо и спиннер не погаснет.
+      function loadYform() {
+        if (yformStarted || !yformFrame) return;
+        yformStarted = true;
+
+        var iframe = yformFrame.querySelector('iframe');
+        if (!iframe) return;
+
+        function markLoaded() {
+          yformFrame.classList.add('is-loaded');
+          yformFrame.classList.remove('is-failed');
+          if (yformFallback) yformFallback.hidden = true;
+        }
+        function markFailed() {
+          yformFrame.classList.add('is-failed');
+          if (yformFallback) yformFallback.hidden = false;
+        }
+
+        iframe.addEventListener('load', markLoaded);
+        iframe.addEventListener('error', markFailed);
+
+        // Страховка: если за 12 секунд ничего не пришло — убираем спиннер
+        // и показываем ссылку на форму в новой вкладке
+        setTimeout(function () {
+          if (!yformFrame.classList.contains('is-loaded')) markFailed();
+        }, 12000);
+
+        var src = iframe.getAttribute('data-src');
+        if (src) iframe.src = src;
+      }
 
       function openModal() {
         lastFocused = document.activeElement;
         modal.classList.add('is-open');
         modal.setAttribute('aria-hidden', 'false');
         document.body.style.overflow = 'hidden';
+        loadYform();
       }
 
       function closeModal() {
@@ -2450,16 +2666,6 @@
         modal.setAttribute('aria-hidden', 'true');
         document.body.style.overflow = '';
         if (lastFocused && lastFocused.focus) lastFocused.focus();
-      }
-
-      // Прячем спиннер, как только Яндекс Форма загрузилась
-      if (yformFrame) {
-        var yformIframe = yformFrame.querySelector('iframe');
-        if (yformIframe) {
-          yformIframe.addEventListener('load', function () {
-            yformFrame.classList.add('is-loaded');
-          });
-        }
       }
 
       // Открытие по любой кнопке с атрибутом data-open-modal
@@ -2488,6 +2694,58 @@
           }
         }
       });
+
+      /* ============ МОБИЛЬНОЕ МЕНЮ (БУРГЕР) ============ */
+      var burger = document.getElementById('burger');
+      var siteNav = document.getElementById('siteNav');
+
+      function setMenu(open) {
+        if (!burger || !siteNav) return;
+        siteNav.classList.toggle('is-open', open);
+        burger.classList.toggle('is-open', open);
+        burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+        burger.setAttribute('aria-label', open ? 'Закрыть меню' : 'Открыть меню');
+        // Прокрутку страницы блокируем, пока открыто меню.
+        // Если открыта модалка — не трогаем: ею управляет её собственный код.
+        if (open) {
+          document.body.style.overflow = 'hidden';
+        } else if (!modal.classList.contains('is-open')) {
+          document.body.style.overflow = '';
+        }
+      }
+
+      if (burger && siteNav) {
+        burger.addEventListener('click', function (e) {
+          e.stopPropagation();
+          setMenu(!siteNav.classList.contains('is-open'));
+        });
+
+        // Закрываем по клику на любую ссылку внутри меню
+        siteNav.addEventListener('click', function (e) {
+          if (e.target.closest('a')) setMenu(false);
+        });
+
+        // Закрываем по клику мимо шапки
+        document.addEventListener('click', function (e) {
+          if (!siteNav.classList.contains('is-open')) return;
+          if (e.target.closest('.site-header')) return;
+          setMenu(false);
+        });
+
+        // Закрываем по Escape и возвращаем фокус на кнопку
+        document.addEventListener('keydown', function (e) {
+          if (e.key === 'Escape' && siteNav.classList.contains('is-open')) {
+            setMenu(false);
+            burger.focus();
+          }
+        });
+
+        // На широком экране меню не нужно — сбрасываем состояние.
+        // Порог совпадает с @media (min-width: 1080px) в CSS.
+        window.addEventListener('resize', function () {
+          if (window.innerWidth >= 1080) setMenu(false);
+        });
+      }
 
       /* ============ ТАЙМЕР СРОЧНОСТИ (24 часа от первого визита) ============ */
       var STORAGE_KEY = 'hexa_offer_deadline';
